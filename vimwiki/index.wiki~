@@ -1,0 +1,202 @@
+== [[数据抓取]] ==
+
+== [[工作总结]] ==
+== [[TODO]] ==
+
+= [[个人开发]] =
+== [[个人学习]] ==
+== [[好书]] ==
+
+= [[实习]] =
+== [[淘宝开放接口]] ==
+== [[会议计要]] ==
+== [[会议计要2]] ==
+== [[工作汇总]] ==
+== [[BRD反馈]] ==
+== [[美工图片任务说明反馈]] ==
+== [[帐号管理]] ==
+== [[消息服务]] ==
+== [[业务规则]] ==
+== [[数据统计]] ==
+== [[测试用例补充]] ==
+== [[TODO]] ==
+== [[UI反馈]] ==
+== [[阿里云服务器问题]] ==
+== [[数据库修改]] ==
+== [[追溯流程]] ==
+== [[BUG]] ==
+== [[请假]] ==
+== [[优化]] ==
+
+= [[开放平台]] =
+
+= Django =
+== [[project vs app]] ==
+
+= Ubuntu =
+== [[Ubuntu设置svn开机自启动]] ==
+== [[Ubuntu设置静态IP]] ==
+== [[Ubuntu设置自动登录]] ==
+== [[Ubuntu部署Bugzilla]] ==
+
+= Arch =
+== [[Arch gtk based application cannot input Chinese]] ==
+== [[Arch mount WebDAV]] ==
+== [[关闭某一端口]] ==
+
+= CentOS =
+== [[64位系统安装Andorid]] ==
+
+= Mysql =
+== [[Ubuntu Mysql忘记root权限]] ==
+== [[Ubuntu设置Mysql不自动启动]] ==
+== [[Ubuntu Enable Mysql root remote Access]] ==
+== [[导入导出数据]] ==
+== [[创建支持中文的数据库]] ==
+
+= Tomcat =
+== [[实现多Tomcat]] ==
+== [[支持中文链接]] ==
+
+= Maven =
+== [[Maven2创建WebApp]] ==
+== [[Maven命令==]]
+== [[Maven配置Tomcat]] ==
+== [[Maven管理第三方包]] ==
+
+= Vim =
+== [[将命令的执行结果插入当前编辑文件]] ==
+
+= Spring =
+== [[解决请求参数中中文字符乱码的问题]] == 
+
+= Android 开发=
+== [[网络请求与界面]] ==
+== Bitmap管理 ==
+== 关于同步与推送 ==
+== [[关于Loading控件]] ==
+== [[关于WebView]] ==
+
+= Java =
+== [[About Ant]] ==
+== [[Charset Encoding]] ==
+== [[制作JAR包]] ==
+
+== [[求职感悟]] ==
+
+= Tools Manual =
+== [[Eclipse快捷键]] ==
+== [[Arch x86_64 run android tools]] ==
+
+== 写一个程序验证运行JAVA程序时，操作系统产生的是进程还是线程，JVM有没有变化? ==
+
+= [[算法数据结构]] =
+== [[1 二叉查找树To排序双向链表]] ==
+== 2 [[设计包含min函数的栈]] ==
+== 3 [[求子数组的最大和]] ==
+
+= 工作思 =
+== [[工作的收获]] ==
+== [[聪明的程序员]] ==
+== [[关于软件开发的思考]] ==
+== [[关于重构的思考]] ==
+=== [[关于重构两三话]] ===
+
+= Vim使用 =
+== [[Vim as python IDE]] ==
+
+= Todo =
+== [[Long-term plans]] ==
+== Short-term plans ==
+=== [[个人博客]] ===
+=== [[打包网站]] ===
+
+= Question =
+== [[Java是如何运行在虚拟机上的?]]==
+
+= Android 测试 =
+== [[测试]] ==
+== [[Testing Fundamentals]] ==
+== [[Am 脚本]] ==
+
+= [[Django]] =
+= [[About Eclim]] =
+
+= [[ Gnome调用Fcitx gtk2-immodule-xim]] =
+
+= [[Linux]] = 
+== [[i386, i686, x86-64]] ==
+== [[initrd]] ==
+== [[samba共享文件夹]] ==
+== [[设备文件系统]] ==
+== [[Linux 配置文件]] ==
+== [[Arch Linux]] ==
+=== [[PKGBUILD,AUR,ABS]] ===
+
+= [[Android 开发]] =
+== [[获取设备信息]] ==
+== [[Android手机网络]] ==
+== [[Android核心分析]] == 
+== [[Skill]] ==
+=== [[ListView nested inside ScrollView]] ===
+=== [[View onMeasure 方法]] ===
+=== [[DisplayMetrics]] ===
+=== [[Android自动化测试]] ===
+=== [[Zygote]] ===
+== Error Problem ==
+=== [[taskdef class com.android.ant.SetupTask cannot be found]] ===
+=== [["adb devices" yields "???????? no permissions"]] ===
+=== [[Android device no permission]] ===
+
+== [[毕设]] ==
+
+= [[杂思]]=
+== [[本本的快捷键是如何到具体的命令的呢？与操作系统的关系呢？]] ==
+== [[linx var是在做什么的]] ==
+
+= [[Java 开发]] =
+== [[关于UUID]] ==
+== [[关于字符集]] ==
+== [[深入理解JAVA虚拟机]] ==
+=== [[虚拟机程序在哪？]] ===
+=== [[使用JAVAC生成Class文件]] ===
+
+= [[数学之美]] =
+== [[统计语言模型]] ==
+
+= [[Linux]] =
+== [[Shell 中的单引号与双引号]] ==
+== [[Vim以16进制查看文件]]==
+
+= [[ 苏菲的世界 ]] =
+
+= [[ 碎碎念 ]] =
+== [[ 中国经济的真相]] ==
+== [[练习10000个小时]] ==
+== [[河套]] ==
+== [[活佛]] ==
+== [[帅句]] ==
+== [[中国十大部门]] ==
+== [[关闭大脑的十件事]] ==
+== [[成都旅游攻略]] ==
+== [[北宋]] ==
+== [[天行健]] ==
+
+= [[茶]] =
+= [[龙井]] =
+
+Quixey Changllenge
+
+= tsfshell =
+
+= [[诗词]] =
+== [[云荒只如初见]] ==
+= [[应用]] =
+= [[歌]] =
+
+= [[西湖]] =
+
+= 2013.05.26更新pacman前刷新package-query&pacman-color, they require pacman < 4.1 =
+
+
+[[点评]]

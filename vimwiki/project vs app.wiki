@@ -1,0 +1,15 @@
+# Difference between 'django-admin.py startapp' vs 'django-admin.py startproject'?
+  * use 'startapp myapp', got:
+     ├── __init__.py
+     ├── models.py
+     ├── tests.py
+     └── views.py
+  * use 'startproejct myproject', got:
+     ├── manage.py
+     └── myproject
+         ├── __init__.py
+         ├── settings.py
+         ├── urls.py
+         └── wsgi.py
+         
+  * 答：startproject指创建项目，app可理解为模块，一个项目可由多个模块组成

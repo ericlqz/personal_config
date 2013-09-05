@@ -1,0 +1,4 @@
+Q1. 什么是Design by Contact?
+A:  这个是Bertrand Meyer (Eiffel语言的创始人) 开发的一种设计技术。核心是断言(asserion)。Design by Contact使用三种断言: 前置条件(pre-conditions), 后置条件(post-conditions)和不变式(invariants)。
+
+Q2. 如何在Junit中使用Design by Contract的概念

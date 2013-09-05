@@ -1,0 +1,23 @@
+
+除非你总是需要一个100×100像素的控件，否则，你必须要重写onMeasure。 
+
+onMeasure方法在控件的父元素正要放置它的子控件时调用。它会问一个问题，“你想要用多大地方啊？”，然后传入两个参数——widthMeasureSpec和heightMeasureSpec。 
+它们指明控件可获得的空间以及关于这个空间描述的元数据。 
+
+比返回一个结果要好的方法是你传递View的高度和宽度到setMeasuredDimension方法里。 
+接下来的代码片段给出了如何重写onMeasure。注意，调用的本地空方法是来计算高度和宽度的。它们会译解widthHeightSpec和heightMeasureSpec值，并计算出合适的高度和宽度值。 
+
+请参阅View源码.
+
+边界参数——widthMeasureSpec和heightMeasureSpec ，效率的原因以整数的方式传入。在它们使用之前，首先要做的是使用MeasureSpec类的静态方法getMode和getSize来译解，如下面的片段所示： 
+
+Java代码  
+int specMode = MeasureSpec.getMode(measureSpec);  
+int specSize = MeasureSpec.getSize(measureSpec);  
+
+
+依据specMode的值，如果是AT_MOST，specSize 代表的是最大可获得的空间；如果是EXACTLY，specSize 代表的是精确的尺寸；如果是UNSPECIFIED，对于控件尺寸来说，没有任何参考意义。 
+
+当以EXACT方式标记测量尺寸，父元素会坚持在一个指定的精确尺寸区域放置View。在父元素问子元素要多大空间时，AT_MOST指示者会说给我最大的范围。在很多情况下，你得到的值都是相同的。 
+
+在两种情况下，你必须绝对的处理这些限制。在一些情况下，它可能会返回超出这些限制的尺寸，在这种情况下，你可以让父元素选择如何对待超出的View，使用裁剪还是滚动等技术。

@@ -1,0 +1,58 @@
+# 返回
+  * 频道1-5 跳转到 频道0
+    * TabFragmentActivity onKeyDown
+    * Demeter OnBakcPressed
+    * TabFragmentActivity handleOnBakcPressed
+    * Demeter handleOnBackPressed
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp
+    * SlidingActivityHelper return false
+
+  * 详页页 跳转到 首页
+    * TabFragmentActivity onKeyDown
+    * Demeter OnBackPressed
+    * TabFragmentActivity handleOnBackPressed
+    * HomePageFragment
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp  
+  
+  * xxx 侧边栏打开时 关闭侧边栏
+    * TabFragmentActivity onKeyDown
+    * Demeter OnBackPressed
+    * TabFragmentActivity handleOnBackPressed
+    * Demeter handleOnBackPressed
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp
+    * SlidingActivityHelper return false
+  
+  * (修改) 侧边栏打开时 关闭侧边栏
+    * TabFragmentActivity onKeyDown
+    * SlidingActivityHelper showContent()
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp
+    * SlidingActivityHelper return false
+ 
+  * (old)详情页 返回到 逛页面
+    * Demeter onKeyDown KEYCODE_BACK
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp
+    * SlidingActivityHelper return false
+
+  * (修改)详情页 返回到 逛页面
+    * Demeter onKeyDown KEYCODE_BACK
+    * Demeter OnBackPressed
+    * TabFragmentActivity handleOnBackPressed
+    * ShopProductFragment
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp
+    * SlidingActivityHelper return false
+
+  * (改完侧边栏后，异变)详情页 返回到 逛页面
+    * TabFragmentActivity onKeyDown
+    * Demeter OnBackPressed
+    * TabFragmentActivity handleOnBackPressed
+    * ShopProductFragment
+    * SlidingFragmentActivity onKeyUp
+    * SlidingActivityHelper onKeyUp  
+
+    * SlidingActivityHelper return false

@@ -1,0 +1,7 @@
+    Android 测试简述, [[http://www.netmite.com/android/mydroid/development/pdk/docs/instrumentation_testing.html]]
+    android [[instrumentation]] 允许我们以自动化的JUint测试用例的方式来验证应用程序中的特性或行为等。比如启动Activity或Provider，发送KeyEvent，对UI元素进行验证等。
+
+1. 将Instrumentation与JUnit testing结合在一起的工具类
+1.1 [[InstrumentationTestCase]]
+1.2 [[InstrumentationTestRunner]]
+ 

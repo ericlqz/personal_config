@@ -1,0 +1,36 @@
+使用vi，输入命令(为了不输入sudo 我直接切换到root账户)：
+sudo su
+vi /etc/network/interfaces
+配置过后的文件内容为（红色标记为更改添加内容）：
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+# The loopback network interface
+auto lo
+iface lo inet loopback
+# The primary network interface
+auto eth0
+# iface eth0 inet dhcp
+iface eth0 inet static
+address 192.168.0.6
+netmask 255.255.255.0
+gateway 192.168.0.1
+注意对比，配置完成之后，重启网络：
+/etc/init.d/networking restart
+如果不是root账户，记得加sudo哦
+昨天设置了静态IP，今天再打开电脑的时候却发现服务器不能联网了，奇怪，后来想了想是不是我没有设置DNS的缘故，使用vi编辑器打开/etc/resolv.conf：
+vi /etc/resolv.conf
+添加DNS:
+search mydomain.com
+nameserver 61.139.39.73
+nameserver 61.139.2.69
+配置完成之后，重启网络：
+/etc/init.d/networking restart
+问题解决！但是新问题出现了，重启计算机之后，/etc/resolv.conf中写入的DNS又被清除了，几天前有网友在此文的评论中说道了这个问题的解决方法，我按照这位网友的方法做了之后，果真可能，所以再把此法写在此文后：
+在/etc/resolvconf/resolv.conf.d/head文件中写入DNS。
+vi /etc/resolvconf/resolv.conf.d/head
+添加DNS:
+search mydomain.com
+nameserver 61.139.39.73
+nameserver 61.139.2.69
+配置完成之后，重启网络：
+/etc/init.d/networking restart

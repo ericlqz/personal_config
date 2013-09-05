@@ -1,0 +1,1 @@
+jar -cf [name].jar [/path/to/directory]

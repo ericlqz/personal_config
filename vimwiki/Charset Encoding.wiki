@@ -1,0 +1,18 @@
+抄录于http://www.cnblogs.com/skynet/archive/2011/05/03/2035105.html
+
+1. [[编码与解码]]
+2. [[什么是字符集，字符编码]]
+3. 常用字符集和字符编码
+3.1 [[ASCII字符集-编码]]
+3.2 [[GBXXXX字符集-编码]]    
+3.3 [[BIG5字符集-编码]]
+3.4 [[Unicode]]
+3.4.1 [[UCS - UNICODE]]
+3.4.2 [[UTF-32]]
+3.4.3 [[UTF-16]]
+3.4.5 [[UTF-8]]
+4. [[与HTTP相关的消息头]]
+
+参考： http://www.joelonsoftware.com/articles/Unicode.html
+
+Q1: 字符集&编码 VS JAVA IO?

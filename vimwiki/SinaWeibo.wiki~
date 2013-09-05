@@ -1,0 +1,15 @@
+1.Auth2.0 do not need signature. no more sigatureBaseString, appSecret, etc.
+
+2.Auth1.0 use Request_Token to get Authorization_Code, then use Authorization_Code to get Access_Token,
+  Auth2.0 directly use Authorization_Code to get Access_Token;
+  Auth2.0's login API contains these two interface, oauth2/authorize and oauth2/accesstoken.
+  
+  PS: The Request_Token used by Server to authorize whether the client is valid regist client or not.
+
+3.OAuth2.0 contains four authorization mode.
+  Sina_Weibo implements three main kinds. 
+  a.Authorization_Code mode. => Authorization_Code - Access_Token => Two steps
+  b.User Resource mode. => Use username and password => One Step => Need user trust
+  c.Hide mode. => Be suitable for web client which use JavaScript(or other) => One Step
+
+4.All API only return JSON, no more XML.

@@ -1,0 +1,28 @@
+1.  Tomcat Authentication
+    First, add an user with administrator access right for Tomcat. To add Tomcat user, edit this file – “%TOMCAT_PATH%/conf/tomcat-users.xml“.
+    <?xml version='1.0' encoding='utf-8'?>
+    <tomcat-users>
+      <role rolename="manager-script"/>
+      <user username="tomcat" password="tomcat" roles="manager-script"/>
+    </tomcat-users>
+
+2.  Maven Authentication
+    In Maven side, you need to add the same user authentication information in “%MAVEN_PATH%/conf/settings.xml“.
+    <server>
+	    <id>TomcatServer</id>
+	    <username>tomcat</username>
+	    <password>tomcat</password>
+    </server>
+    
+3.  Maven-Tomcat-Plugin
+    Declare “Maven-Tomcat plugin” and related Tomcat server detail in your pom.xml file.
+    <plugin>
+      	<groupId>org.apache.tomcat.maven</groupId>
+      	<artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.1</version>
+      	<configuration>
+            <url>http://localhost:8080/manager/text</url>
+      		<server>TomcatServer</server>
+      		<path>/liangshihuiAppServer</path>
+      	</configuration>
+    </plugin>

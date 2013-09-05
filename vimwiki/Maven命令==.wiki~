@@ -1,0 +1,8 @@
+1.  Install personal JAR to local repository
+    #mvn install:install-file
+     -Dfile=Sample.jar
+     -DgroupId=uniquesample
+     -DartifactId=sample_jar
+     -Dversion=2.1.3b2
+     -Dpackaging=jar
+     -DgeneratePom=true

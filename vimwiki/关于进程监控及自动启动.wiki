@@ -1,0 +1,57 @@
+做服务器端开发的同学应该都对进程监控不会陌生，最近恰好要更换 uwsgi 为 gunicorn，而gunicorn又恰好有这么一章讲进程监控，所以多研究了下。
+结合之前在腾讯工作的经验，也会讲讲腾讯的服务器监控是怎么做的。同时也会讲下小团队又该怎么敏捷的解决。
+下面按照监控的方法依次介绍。
+
+一。按照进程名监控
+在腾讯内部所有server都是要打包发布的，而在打包过程中是需要填写要监控的进程名，然后在crontab中定时通过ps查询进程是否存在。
+这种方法是比较简单的方法，但是考虑到很多进程会在启动之后改名，以及进程名存在各种特殊字符，多个进程同时存在的问题，实际操作起来并不是很舒服。
+举个简单的例子，gunicorn启动之后的进程名类似这样 master: [wsgi:app]，其中的方括号在grep时要记得转义，否则就会出问题。
+不过不管怎么说，这种方法在很多其他方式用不了的时候反而是最简单的方法。
+下面是用python的实现：
+def monitor_process(key_word, cmd):
+    p1 = subprocess.Popen(['ps', '-ef'], stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(['grep', key_word], stdin=p1.stdout, stdout=subprocess.PIPE)
+    p3 = subprocess.Popen(['grep', '-v', 'grep'], stdin=p2.stdout, stdout=subprocess.PIPE)
+ 
+    lines = p3.stdout.readlines()
+    if len(lines) &gt; 0:
+        return
+ 
+    sys.stderr.write('process[%s] is lost, run [%s]\n' % (key_word, cmd))
+    subprocess.call(cmd, shell=True)
+ 
+二。按照端口监控
+这种方式之前在腾讯打包的时候也有用，但是可能是进程名更直观的原因吧，貌似一直没怎么用起来。
+不过现在自己在做包部署的时候，反而觉得端口监控是个最靠谱的事情了。这个也没什么好多说的，直接上刚写完的python代码：
+def monitor_port(protocol, port, cmd):
+    address = ('127.0.0.1', port)
+    socket_type = socket.SOCK_STREAM if protocol == 'tcp' else socket.SOCK_DGRAM
+    client = socket.socket(socket.AF_INET, socket_type)
+ 
+    try:
+        client.bind(address)
+    except Exception, e:
+        pass
+    else:
+        sys.stderr.write('port[%s-%s] is lost, run [%s]\n' % (protocol, port, cmd))
+        subprocess.call(cmd, shell=True)
+    finally:
+        client.close()
+ 
+有的朋友可能说对于tcp端口检查，其实以client的方式来connect()看是否成功会不会更好？其实我觉得这种方式也挺好的，并且对于不同的协议可以再深入处理一下，比如对http协议可以用urllib2.urlopen确保返回正确的包才算正常。不过如果这么做的话，就有点偏黑盒监控 了，比如监控宝、阿里云监控之类的服务了。
+
+三。通过监控server启动进程，并以监控子进程的方式监控
+这个也是在gunicorn页面上看到的，说起来gunicorn很不厚道的把gaffer放到第一个，让我还以为是个很成熟的产品，结果发现连启动都是个问题。
+相反排在后面的supervisor反而相当的好用，下面是截图：
+
+supervisor可以很方便的管理进程，包括重启，停止等等，而且提供了web界面和用户验证，可以很方便的在线管理。
+但是有好处就有坏处，用了supervisor之后，就不能自己随便的去自己重启服务了，否则会影响supervisor的监控，这对我这种喜欢自己执行 xx.sh restart 的人实在有点太痛苦了。当然，其实要是习惯了去supervisorctl 里面start/stop/reload 之后也就还好了。
+用supervisor配置gunicorn的配置项如下：
+[program:yuanzhaopin]
+environment=PYTHON_EGG_CACHE=/tmp/.python-eggs/,PYTHONPATH=/data/release/yuanzhaopin
+command=/usr/local/bin/gunicorn --debug --log-level debug --log-file /tmp/g.log wsgi:app
+user=zny2008
+autorestart=true
+redirect_stderr=true
+
+原文链接: http://www.vimer.cn/2013/07/%E5%85%B3%E4%BA%8E%E8%BF%9B%E7%A8%8B%E7%9B%91%E6%8E%A7%E5%8F%8A%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8.html

@@ -1,0 +1,18 @@
+1. AppKey
+   创建应用时，TOP颁发的唯一标识。TOP通过AppKey来鉴别应用的身份，调用接口时作为参数传递。
+   
+2. AppSecret
+    TOP为应用分配的密钥。此密钥用于保证应用来源的可靠性。
+    
+3. SessionKey
+    用户身份的标识，应用获取SessionKey后表明应用取得了用户的授权，可以向TOP请求用户的信息。
+    
+4. 优惠接口 (需要卖家授权)
+    * taobao.promotion.activity.get 查询某个卖家的店铺优惠券领取活动
+    * taobao.promotion.coupons.get 查询卖家优惠券
+    * taobao.marketing.promotions.get 根据商品ID查询卖家使用该第三方工具对商品设置的所有优惠策略
+    * taobao.ump.promotion.get  商品优惠详情查询，可查询商品设置的详细优惠。包括限时折扣，满就送等官方优惠以及第三方优惠。此接口有调用频率限制请酌情使用，建议使用淘客API获取商品折扣价格。
+      * PromotionDisplayTop, 对象中有多个promotion_in_item 和promotion_in_shop
+      * 1.promotion_in_item指的是商品级优惠，比如：限时折扣、定向优惠以及通过UMP接口设置的商品级优惠。2.promotion_in_shop指的是店铺级优惠，比如：满就送、满就减以及通过UMP接口设置的店铺级优惠。3.在下单的时候，店铺级优惠只能选择一个，商品级优惠也只能选择一个，但是商品级优惠可以跟店铺级优惠共存。页面上可以展示多个，API也可以查询到多个共存。
+    * 
+5. 商品评价接口 (需要授权)

@@ -1,0 +1,51 @@
+1.386 为32位 x86 64位
+2.
+  a. i386 适用于intel和AMD所有32位的cpu.以及via采用X86架构的32的cpu.
+     intel平台包括8086,80286,80386,80486,奔腾系列(1.2.3.4)、赛扬系列,Pentium D系列以及centrino P-M,core duo 等.
+  b. X86_64 适用于intel的Core 2 Duo, Centrino Core 2 Duo, and Xeon 和AMD Athlon64/x2, Sempron64/x2, Duron64等采用X86架构的64位cpu.
+3.i686 只是i386的一个子集,支持的cpu从Pentium 2 (686)开始,之前的型号不支持.
+
+i386和i686
+
+     现在所有的intel 32位体系（包括AMD等兼容CPU)都叫i386体系，包括P4。、i686仍然属于i386体系，不过对CPU（相对于386)的特性作了指令优化。GNU/Linux分为alpha、PowerPC、Sun等各个不同版本，所有从Intel386-P4都用i386版本，但i386版本中有几个内核（i486,i486,i586,i686)，安装时安装程序检测到你得CPU级别后，自动为你安装相应内核。
+
+      与cpu的指令集有关.I代表与intel的指令集兼容，后面的数字是指cpu的分类。
+因为intel的cpu经过这么久的发展，不断的更新，产生从8086,8088,80286,80386,80486,奔腾（586),奔腾二代（686)，奔腾三代（686)...cpu的每次换代，都增加了一些新的指令集,但都向后兼容（就是说后面的CPU都能完全使用前面的CPU的指令集）。而软件包为了能发挥好cpu的全部性能，就加入cpu相对应能指行的指令。因此就产生了各种不同的软件包。所以，i686的软件包能在奔腾二代以上的cpu上执行，但基本不能在此之先的cpu如486上执行。而i386的软件包既可在i386的电脑上执行，也可在后面所有的cpu上执行（如奔三、奔四，但不能发挥cpu的最佳性能。）
+
+i686指的是Pentium Pro以及此后的Intel IA32 CPU，也就是平常我们所说的P6系列处理器。
+
+i386不用说了，泛指80386以后的。
+
+IA32划分子集的话：386、486是一个，Pentium自己是一个， Pentium Pro、Pentium II、Pentium III是P6系列，Pentium IV又独自算一个。 Pentium 4是NetBurst架构的，比起P6系列有些变化。
+
+i686是pentiumpro及以后的通用arch，而i386是所有x86的通用arch，i386包括而i686没有包括的就是386、486、586(pentium)、pentium－mmx
+现在应该没有人还在用586及以前的cpu，甚至是pentiumpro。而rpm都是为i386打的包，运行效率会低很多。
+兼容性关系大概是
+i386:
+    i386:
+        i486:
+          winchip-c6: MMX 3dNOW!
+             winchip2: MMX 3dNOW!
+          i586(pentium):
+               pentium-mmx: MMX 
+        i686:
+          pentiumpro: 
+                pentium2: MMX
+                   pentium3(m): MMX SSE
+                      pentium-m: MMX SSE SSE2
+                      pentium4(m): MMX SSE SSE2
+                         prescott: MMX SSE SSE2 SSE3
+                             nocona: MMX SSE SSE2 SSE3 （64bit）
+             c3: MMX 3dNOW!
+                c3-2: MMX SSE
+             k6: MMX
+                k6-2,k6-3: MMX 3dNow!
+                   althon,althon-tbird: MMX 3dNow! SSE(prefetch only)
+                      athlon-4, athlon-xp, athlon-mp: MMX 3dNOW! 3dNOW(enhanced) SSE(full)
+                         k8, opteron, athlon64, athlon-fx: MMX 3dNOW! 3dNOW(enhanced) SSE SSE2 （64bit）
+可以看出，i686囊括了现在正在使用的所有x86，所以把rpm打包是的arch改为i686是没有问题的，反而能在指令调度上优化，填满流水线，使程序运行的更快。
+
+而其中除了pentiumpro外，所有兼容i686的x86都有MMX，大多数有SSE。十分使用扩展指令基对大规模计算来说很重要，如昨天加了-mmmx -march=i686打包了一下GIMP，发现有些处理（如马赛克滤镜）快了5倍以上。
+另外，如果浮点运算使用-mfpmath=sse -msse的话，浮点除法速度有近百倍的提高，这对浮点运算偏重的如音、视频解码，编码很重要。
+当然为了兼容，可以打包两个版本，有sse和没有sse的。
+希望开发者能考虑一下，把/usr/lib/rpm/rpmrc中的buildtranslator xxx:i386改为 xxx:i686，并在optflag i686:中加入 -mmmx。

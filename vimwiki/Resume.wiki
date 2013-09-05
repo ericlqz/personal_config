@@ -1,0 +1,71 @@
+                                    Qingzu Lin
+
+        School of Software and Microelectronics     Phone: 15201423727
+                                                    Email: linqingzu@gmail.com
+
+Object 
+
+Education   Sep 2010 - Pre  Peking University                           Beijing
+                            School of Software and Microelectronics
+            Masters's Degree Candidata in Service Science and Engineering
+            And will graduate in 2013
+            
+            Major courses: Advanced Internet Programming, Algorithm Analysis
+            and Design, Data warehouse, Service Science and Engineering and 
+            so on.
+            
+            Sep 2006 - Jul 2010     Xiamen University                   Xiamen
+                                    School of Software  
+            Bachelor's Degree in Software Engineering
+            Major courses: Computer Network, Operating System, Compiler
+            Principles, Database System, Alogrithm and Data Structure
+
+Work Experience     Sep 2009 - Jan 2010     China-Holland Educational   Xiamen 
+                                            Competence and Knowledge 
+                                            Center on IT
+                    Job Title:  C# Developer
+                    Responsibilities: I participate in the relization of CMS 
+                    system of this center. I was responsible for Session Man-
+                    agement, Layout Management and RBAC(Role-Based Access Control)
+                    modules in this project.
+
+                    Jul 2011 - Sep 2011     Innovation Work             Beijing
+                    Job Title：iOS Developer
+                    Responsibilities: I participate in the relization of a voice
+                    group chat application in "Feibo" project team. 
+
+                    Sep 2011 - Sep 2012     Tigerknows                    Beijing
+                    Job Title: Android Developer
+                    Responsibilities: I participate in the relization and 
+                    interation of new version of a LBS application called 
+                    "TigerMap". I was responsible for Traffic, Map and User
+                    modules in this project.
+
+Project Experience  Apr 2010 - May 2010     Peking University                           Beijing
+                                            School of Software and Microelectronics 
+
+                    Project Name: ARP Cheater and Sniffer in LAN
+                    This project aims to provide two network tools which can work in LAN. The ARP 
+                    Cheater can send fake ARP message onto a Local Area Network, aim to 
+                    associate the attacker's MAC address with the IP address of default 
+                    gateway, causing any traffic meant for that IP address to be sent to 
+                    the attacker instead. While the  Sniffer can capture each packet and 
+                    decode the packet's raw data, showing the values of various fields in 
+                    packet, and analyzes its content.
+                    Enviroment: Ubuntu
+
+                    Sep 2011 - Sep 2011     Tigerknows                     Beijing
+                    Poject Name: TigerMap
+                    This project aims to develope a LBS(Localed Based Software) application
+                    to provide life search service. Mainly including traffic, map, locating
+                    search and so on. I was responsible for traffic service, map service, 
+                    and user service. Traffic service  provide transfer, drive, walk and bus 
+                    query. Map service provide tiled map service which based on Mercator 
+                    Coordinate System, and load various search result onto map. User Service
+                    supports user login and regist operations.
+                    Environment: Ubuntu, Android
+
+
+Skill & Hobbies     English:  CET-6 passed
+                    Skill: Java, Andorid, Linux, Python
+                    Hobbies: Reading, Tennis, Table Tennis and so on

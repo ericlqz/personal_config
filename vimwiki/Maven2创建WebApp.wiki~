@@ -1,0 +1,14 @@
+1. Create Project:
+    mvn archetype:generate -DgroupId=${groupId} -DartifactId=${artifactId} -DarchetypeArtifactId=maven-archetype-webapp
+
+2. Eclipse IDE Support:
+    mvn eclipse:eclipse -Dwtpversion=2.0
+
+3. Update POM:
+    ~ add the dependencys or build requirements
+
+4. Attach Dependencies to Project:
+    mvn eclipse:eclipse -Dwtpversion=2.0 [-DdownloadSources=true -DdownloadJavadocs=true]
+    
+5. Install m2eclipse plugin to Eclipse:
+    install plugin 'm2eclipse', to make Eclipse regonize the maven library path.

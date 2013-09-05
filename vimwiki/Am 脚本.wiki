@@ -1,0 +1,13 @@
+am是在命令行启动android程序的一种方法，源码参见[file:////home/eric/Am.java].
+
+分析：
+1. 在函数runInstrument中实现了instrument命令，主要流程如下：
+1.1 参数解析
+1.2 创建一个InstrumentationWatcher对象，用于接收测试结果
+1.3 调用IActivityManager的startInstrumentation运行测试程序
+1.4 调用InstrumentationWatcher的waitForFinish函数等待测试结束
+
+2. IActivityManager.startInstrumentataion，源码参见[[ActivityManagerService.java]], 主要流程如下：
+2.1 调用PackageManager的getInstrumentationInfo获取InstrumentationInfo和ApplicationInfo
+2.2 uninstall原来的测试程序(如果前面运行相同的测试程序，就会停止它)
+2.3 运行新的测试程序

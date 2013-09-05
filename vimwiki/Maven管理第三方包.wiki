@@ -1,0 +1,17 @@
+1.  Declare a repository local to the project:
+    <repositories>
+      <repository>
+        <id>my-local-repo</id>
+        <url>file://${basedir}/my-repo</url>
+      </repository>
+    </repositories>
+
+2.  Install third party JAR to local repository
+    mvn install:install-file -Dfile=<path-to-file> -DgroupId=<myGroup> -DartifactId=<myArtifactId> -Dversion=<myVersion> -Dpackaging=jar -DlocalRepositoryPath=<path>
+    
+3.  Declare it like any other dependency
+    <dependency>
+      <groupId>your.group.id</groupId>
+      <artifactId>3rdparty</artifactId>
+      <version>X.Y.Z</version>
+    </dependency>

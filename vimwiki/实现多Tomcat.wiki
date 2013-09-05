@@ -1,0 +1,9 @@
+1. 解压Tomcat，到任一目录，如/usr/share/tomcat-*
+2. 修改conf目录下的server.xml
+3. 修改http访问端口（默认为8080端口）
+4. 修改Shutdown端口（默认为8005端口）
+5. 修改JVM启动端口（默认为8009端口）
+
+6. 未实现的，网上有人说的：
+   a.新建一个环境变量CATALINA_HOME2，路径为d:\TomcatServer2;
+   b.编辑Tomcat/bin/startup.bat和catalina.bat，把CATALINA_HOME全部替换成CATALINA_HOME2;

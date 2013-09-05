@@ -1,0 +1,629 @@
+Linux操作系统下共享文件夹设置方法介绍
+
+首先当然是要安装samba了，呵呵：
+
+sudo apt-get install samba
+
+sudo apt-get install smbfs
+
+下面我们来共享群组可读写文件夹，假设你要共享的文件夹为： /home/ray/share
+
+首先创建这个文件夹
+
+mkdir /home/ray/share
+
+chmod 777 /home/ray/share
+
+备份并编辑smb.conf允许网络用户访问
+
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_backup
+
+sudo gedit /etc/samba/smb.conf
+
+搜寻这一行文字
+
+; security = user
+
+用下面这几行取代
+
+security = user
+
+username map = /etc/samba/smbusers
+
+将下列几行新增到文件的最后面，假设允许访问的用户为：newsfan。而文件夹的共享名为 Share
+
+[Share]
+
+comment = Shared Folder with username and password
+
+path = /home/ray/share
+
+public = yes
+
+writable = yes
+
+valid users = newsfan
+
+create mask = 0700
+
+directory mask = 0700
+
+force user = nobody
+
+force group = nogroup
+
+available = yes
+
+browseable = yes
+
+然后顺便把这里改一下，找到［global］把 workgroup = MSHOME 改成
+
+workgroup = WORKGROUP
+
+display charset = UTF-8
+
+unix charset = UTF-8
+
+dos charset = cp936
+
+后面的三行是为了防止出现中文目录乱码的情况。其中根据你的local，UTF-8 有可能需要改成 cp936。自己看着办吧。
+
+现在要添加newsfan这个网络访问帐户。如果系统中当前没有这个帐户，那么
+
+sudo useradd newsfan
+
+要注意，上面只是增加了newsfan这个用户，却没有给用户赋予本机登录密码。所以这个用户将只能从远程访问，不能从本机登录。而且samba的登录密码可以和本机登录密码不一样。
+
+现在要新增网络使用者的帐号：
+
+sudo smbpasswd -a newsfan
+
+sudo gedit /etc/samba/smbusers
+
+在新建立的文件内加入下面这一行并保存
+
+newsfan = "network username"
+
+如果将来需要更改newsfan的网络访问密码，也用这个命令更改
+
+sudo smbpasswd -a newsfan
+
+删除网络使用者的帐号的命令把上面的 -a 改成 -x
+
+sudo testparm
+
+sudo /etc/init.d/samba restart
+
+如果还是不行查看Iptables（防火墙是否开启），如果开启可以先将服务停止。
+
+最后退出重新登录或者重新启动一下机器。 
+
+ 
+
+ 
+
+ 
+
+利用Samba配置文件共享服务
+
+配置文件 /etc/samba/
+
+//设置samba密码文件
+
+# cat /etc/passwd|mksmbpasswd.sh > /etc/samba/smbpasswd
+
+//为安全起见，设置文件和目录的权限
+
+# chown root.root /etc/samba/smbpasswd
+
+# chmod 500 /etc/samba
+
+# chmod 600 /etc/samba/smbpasswd
+
+//为用户设置口令
+
+#smbpasswd root
+
+//检查配置文件的正确性
+
+# testparm
+
+//检查服务器所共享的资源
+
+# smbclient –L localhost
+
+//列出资源使用情况
+
+# smbstatus [-b]
+
+//配置文件
+
+节：
+
+l         [Global] 定义全局参数和缺省值
+
+l         [Homes] 定义用户的Home目录共享
+
+l         [Printers] 定义打印机共享
+
+l         [Userdefined_ShareName] 用户自定义共享（可有多个）
+
+变量：
+
+l         %S 当前服务名
+
+l         %P 当前服务的根路径
+
+l         %u 当前服务的用户名
+
+l         %g 给定%u的所在工作组名
+
+l         %H 给定%u的宿主目录
+
+l         %v Samba版本号
+
+l         %h 运行服务的主机名
+
+l         %m 客户机的NETBIOS名
+
+l         %L 服务器的NetBIOS名
+
+l         %L 当前的日期和时间
+
+ 
+
+//使用符号链接组织本地共享资源
+
+# vi /etc/samba/smb.conf
+
+[Resource]
+
+    comment = Local Resource
+
+    path = /var/samba/resource
+
+    public = yes
+
+writeable = yes
+
+// -p  parent(no error if existing, make parent directories as needed)
+
+# mkdir –p /var/samba/resource
+
+#cd /var/samba/resource
+
+//-s, --symbolic
+
+# ln –s /usr/share/doc doc
+
+//为所有用户配置只读共享和读写共享
+
+# vi /etc/samba/smb.conf
+
+[tmp]
+
+    comment = Temporary file space
+
+    path = /tem
+
+    read only = no
+
+    public = yes
+
+ 
+
+[cdrom]
+
+    comment = CDROM
+
+    path = /mnt/cdrom
+
+    read only = yes
+
+public = yes
+
+//为指定用户或组配置共享
+
+# useradd samba
+
+# passwd samba
+
+# mkdir /var/samba/samba
+
+//更改目录属主
+
+# chown samba.samba /var/samba/samba
+
+# vi smb.conf
+
+ 
+
+[sambadir]
+
+    comment = Samba's service
+
+    path = /var/samba/samba
+
+    valid users = samba
+
+    public = no
+
+writable = yes
+
+ 
+
+//保存修改
+
+//Linux环境下访问Samba共享
+
+# cat /etc/samba/lmhosts
+
+# smbclient –L IP –U 用户名
+
+# smbmount //win/tools /mnt/smb/win
+
+ 
+
+linux smb.conf详解
+
+17行workgroup
+
+语法 workgtoup = <工作组群>;
+预设 workgroup = MYGROUP
+说明 设定 Samba Server 的工作组
+例 workgroup = workgroup 和WIN2000S设为一个组，可在网上邻居可中看到共享
+
+21行server string
+
+语法 server string = <说明>;
+预设 sarver string = Samba Server
+说明 设定 Samba Server 的注释
+其他 支持变量 t%-访问时间 I%-客户端IP m%-客户端主机名 M%-客户端域名 S%-客户端用户名
+例 server string = this is a Samba Server 设定出现在Windows网上邻居的 Samba Server 注释为 this is a Samba Server
+
+28行hosts allow
+语法 hosts aoolw = <IP地址>; …
+预设 ; host allow = 192.168.1. 192.168.2. 127.
+说明 限制允许连接到 Samba Server 的机器，多个参数以空格隔开。表示方法可以为
+完整的IP地址，如 192.168.0.1
+网段，如 192.168.0.
+例 hosts allow = 192.168.1. 192.168.0.1 表示允许192.168.1 网段的机器 网址为192.168.0.1 的机器 连接到自己的samba server
+
+32行printcap name
+
+语法 printcap name = <打印机配置文件>;
+预设 printcap name = /etc/printcap
+说明 设定 samba srever 打印机的配置文件
+例 printcap name = /etc/printcap 设定 samba srever 参考 /etc/printcap 档的打印机设定
+
+33行load printers
+
+语法 load printers = <yes/no>;
+预设 load printers = yes
+说明 是否在开启 samba server 时即共享打印机
+
+38行printing
+语法 printing = <打印机类型>;
+预设 printing = lprng
+说明 设定 samba server 打印机所使用的类型,37行为目前所支持的类型
+
+42行guest account
+语法 guert account = <帐户名称>;
+预设 guert account = pcguest
+说明 设定访问 samba server 的来宾帐户(即访问时不用输入用户名和密码的帐户),若设为pcguest的话则为默认为”nobody”用户
+例 guert account = andy 设定设定访问 samba server 的来宾帐户以andy用户登陆,则此登陆帐户享有andy用户的所有权限
+
+46行log file
+语法 log file = <日志文件>;
+预设 log file = /var/log/samba/%m.log
+说明 设定 samba server 日志文件的储存位置和文件名(%m代表客户端主机名)
+
+49行max log size
+语法 max log size = <??KB>;
+预设 max log size = 0
+说明 设定日子文件的最大容量,单位KB 这里的预设值0代表不做限制
+
+53行security
+语法 security = <等级>;
+预设 security = user
+说明 设定访问 samba server 的安全级别 共有四种
+share—不需要提供用户名和密码
+user—-需要提供用户名和密码,而且身份验证由 samba server 负责
+server–需要提供用户名和密码,可指定其他机器(winNT/2000/XP)或另一台 samba server作身份验证
+domain–需要提供用户名和密码,指定winNT/2000/XP域服务器作身份验证
+
+60行password server
+语法 password server = <IP地址/主机名>;
+预设 password server = <NT-Server-Name>;
+说明 指定某台服务器(包括windows 和 linux)的密码,作为用户登入时验证的密码
+其他 此项需配合 security = server时,才可设定本参数
+
+64行password level
+65行username level
+语法 password level = <位数>;
+username level = <位数>;
+预设 password level = 8
+username level = 8
+说明 设定用户名和密码的位数,预设为8位字符
+
+70行encrypt passwords
+语法 encrypt passwords = <yes/no>;
+预设 encrypt passwords = yse
+说明 设定是否对samba的密码加密
+
+71行smb passwd file
+语法 smb passwd file = <密码文件>;
+预设 smb passwd file = /etc/samba/smbpasswd
+说明 设定samba的密码文件
+
+130行local master
+语法 local master = <yes/no>;
+预设 local master = no
+说明 设定 samba server 是否要担当LMB角色(LMB负责收集本地网络的Browse List资源),通常无特殊原因设为no
+
+134行os level = 33
+语法 os level = <数字>;
+预设 os level = 33
+说明 设定 samba server的os level. os level从 0 到 255 . winNT的os level为33, win95/98的os level 是 1 .
+若要拿samba server 当LMB或DMB则它的os level至少要大于NT的33以上
+
+139行domain master
+语法 domain master = <yes/no>;
+预设 domain master = yes
+说明 设定 samba server 是否要担当DMB角色(DMB会负责收集其他子网的Browse List资源),通常无特殊原因设为no
+
+143行preferred master
+语法 preferred master = <yes/no>;
+预设 preferred master = yes
+说明 设定 samba server 是否要担当PDC角色(PDC会负责追踪网络帐户进行的一切变更),通常无特殊原因设为no.
+(同一网段内不可有两个PDC,他们会每5分钟抢主控权一次)
+
+163行wins support
+语法 wins support = <yes/no>;
+预设 wins support = yes
+说明 设定samba server 是否想网络提供WINS服务,通常无特殊原因设为no.
+除非所处网络上没有主机提供WINS服务且需要此台samba server提供WINS服务是才设yes
+其他 wins support 和 wins server 只能选择一个
+
+167行wins server
+语法 wins server = <IP地址>;
+预设 wins server = w.x.y.z
+说明 设定samba server 是否要使用别台主机提供的WINS服务.通常无特殊原因设为no.除非所处网络上有一台主机提供WINS服务才要设yes
+其他 wins support 和 wins server
+例 wins server = 192.168.0.1 表示samba server要使用192.168.0.1提供的WINS服务
+
+#============================== Share Definitions =============================
+
+[homes]
+comment = Home Directories
+browseable = no
+writable = yes
+valid users = %S
+
+使用者本身的”家”目录，当使用者以samba使用者身份登入samba server 后，
+samba server 底下会看到自己的家目录，目录名称是使用者自己的帐号
+
+[分享的资源名称]
+<指令1>; = (参数)
+<指令2>; = (参数)
+……………………..
+
+要提供分享资源时，须先把欲分享的资源以 [ ] 符号括住，底下通常会带指令和参数来表示此资源的设定和存取权限等,详情如下
+
+comment———注释说明
+path————分享资源的完整路径名称，除了路径要正确外，目录的权限也要设对
+browseable——是yes/否no在浏览资源中显示共享目录，若为否则必须指定共享路径才能存取
+printable——-是yes/否no允许打印
+hide dot ftles–是yes/否no隐藏隐藏文件
+public———-是yes/否no公开共享，若为否则进行身份验证(只有当security = share 时此项才起作用)
+guest ok——–是yes/否no公开共享，若为否则进行身份验证(只有当security = share 时此项才起作用)
+read only——-是yes/否no以只读方式共享当与writable发生冲突时也writable为准
+writable——–是yes/否no不以只读方式共享当与read only发生冲突时，无视read only
+vaild users—–设定只有此名单内的用户才能访问共享资源(拒绝优先)(用户名/@组名)
+invalid users—设定只有此名单内的用户不能访问共享资源(拒绝优先)(用户名/@组名)
+read list——-设定此名单内的成员为只读(用户名/@组名)
+write list——若设定为只读时，则只有此设定的名单内的成员才可作写入动作(用户名/@组名)
+create mask—–建立文件时所给的权限
+directory mask–建立目录时所给的权限
+force group—–指定存取资源时须以此设定的群组使用者进入才能存取(用户名/@组名)
+force user——指定存取资源时须以此设定的使用者进入才能存取(用户名/@组名)
+allow hosts—–设定只有此网段/IP的用户才能访问共享资源
+allwo hosts = 网段 except IP
+deny hosts——设定只有此网段/IP的用户不能访问共享资源
+
+allow hosts=本网段指定IP指定IP
+
+deny hosts=指定IP本网段指定IP
+
+Samba的主配置文件。但所包含的内容并不是很全，详见man smb.conf
+所有以;或#开头的行为注释行，将被忽略掉。在这个例子中我们使用；表示可以由你来修改或设置的部分，而#则表示真正意义上的注释。
+注意：不论你何时何地修改了这个文件，你都应运行一下命令“testparm“来测试你是否犯了一些基本语法的错误。
+1、全局设置
+[global]
+# workgroup = NT-Domain-Name or Workgroup-Name
+workgroup = MYGROUP
+下面的这句话是后加的，加入的意义为：使WIN用户可以看到主机的名字，但我将此行注释掉后，没看到什么影响。
+netbios name = express
+下面设置的是服务器的字符串，相当于NT中的计算机说明部分
+server string = Samba Server
+下面的选项对于安全性很重要。他允许你对是否可以进行本地网络连接的机器进行了限制。
+hosts allow = 192.168.1.50 192.168.1.43 192.168.1.44 192.168.1.45 192.168.1.46 192.168.1.47 192.168.1.48 192.168.1.49
+如果想要自动共享打印机而不是个别地进行单独设置，使用下面的选项：
+printcap name = /etc/printcap
+load printers = yes
+除非你是非标准的，否则下面的选项对于你说清楚打印系统的类型并不是很必要。当前支持的打印系统主要有以下几类：
+# bsd, sysv, plp, lprng, aix, hpux, qnx, cups
+printing = cups
+如果想要一个guest账号的话就不用注释下面的行。你必须把这个加入到/etc/passwd中，否则用户“nobody“会被使用。
+; guest account = pcguest
+下面的选项告诉samba对不同的机器连接使用不同的日志文件。小心如果你允许访问的机器太多的话，文件可能极多哟！！！：）
+log file = /var/log/samba/%m.log
+设置log文件的大小（KB）（# Put a capping on the size of the log files (in Kb).）
+max log size = 0
+安全格式。大多数用户使用用户级安全。详见security_level.txt。
+security = share
+使用密码服务选项，仅用于security = server模式
+参数列表可以包括：
+# password server = My_PDC_Name [My_BDC_Name] [My_Next_BDC_Name]
+# 或自动查找域控制器
+# password server = *
+; password server = 
+对于所有的上面和下面的组成部分的_n_characters密码所允许的匹配级别
+; password level = 8
+; username level = 8
+你可能想使用密码编码。见在samba文档中的ENCRYPTION.txt, Win95.txt和WinNT.txt。
+除非你已经仔细的读过了那些文档，否则不要激活下面的选项：
+encrypt passwords = yes
+smb passwd file = /etc/samba/smbpasswd
+当samba被建成为支持SSL的模式时，下面需要从大量的假的错误中保持smbclient。（原文如下：
+# The following is needed to keep smbclient from spouting spurious errors
+# when Samba is built with support for SSL.
+; ssl CA certFile = /usr/share/ssl/certs/ca-bundle.crt
+下面的选项需要允许从windows对linux系统的密码进行修改。
+# 注意：上面带有’encrypt passwords’ 和’smb passwd file’选项使用这些。
+# 另： 如果仅是允许工作站改变加密的SMB密码那么你不需要这些。它们允许Unix密码与SMB密码保持同步。
+unix password sync = Yes
+passwd program = /usr/bin/passwd %u
+passwd chat = *New*password* %n\n *Retype*new*password* %n\n *passwd:*all*authentication*tokens*updated*successfully*
+你可以使用PAM的密码改变控制标记。如果激活的活，当一个SMB客户端请求代替了在密码程序列表时，PAM将用于密码改变。对于大多数的设置，不改变密码字符参数而激活这个也是可能的。
+pam password change = yes
+Unix用户可能映射不同的SMB用户名。
+username map = /etc/samba/smbusers
+在每一台机器的基础上，使用下面的行可以使你定制你的配置。%m以连接机器的netbios名代替。
+; include = /etc/samba/smb.conf.%m
+这个参数控制samba是否服从于PAM账号和对话管理指示。默认情况下是使用PAM仅清除文本证明且忽略任何的账号或对话管理。注意：当加密密码=yes时，samba总是忽略PAM的证明。
+obey pam restrictions = yes
+很多人都会发现这个选项优化了性能。详见speed.txt和帮助手册页。
+socket options = TCP_NODELAY SO_RCVBUF=8192 SO_SNDBUF=8192
+配置samba使用多重接口。
+如果你有多个网络接口的话，必须把他们在下面列出来。详见man。
+; interfaces = 192.168.12.2/24 192.168.13.2/24
+配置请求播出同步到远程浏览器，或从一个主机同步浏览器列表或从/到整个子网（如下）。
+; remote browse sync = 192.168.3.25 192.168.5.255
+使主机将自己广播到本地的子网。
+; remote announce = 192.168.1.255 192.168.2.44
+浏览器控件选项：
+如果你不想让你的samba在你的网络中变成一个主浏览器，那么设置local master为no，否则将采用正常的规则。
+; local master = no
+os level决定在主浏览器的中被提取的优先级。默认值是很合理的。
+; os level = 33
+域master指定samba是域主浏览器。这允许samba在子网之间比较浏览列表。如果你已经有了一个Win NT的主域控制器的话，就不要设置这个选项。
+; domain master = yes
+首选master使samba在启动时拒绝一个本地浏览器的选出，且给他一些小的较高的机会让其来选出。
+; preferred master = yes
+如果你要samba成为Win95工作站的域登录服务器的话则激活它。
+; domain logons = yes
+如果你激活了domain logons，那么你可以让每一台机器或每一个用户登录角本运行一个指定的登录批处理文件。原文如下：if you enable domain logons then you may want a per-machine or per user logon script run a specific logon batch file per workstation (machine)
+; logon script = %m.bat
+每一个用户名都运行一个指定的登录批处理文件
+; logon script = %U.bat
+# 存储动态的profile（仅针对95与NT）
+# %L 代表netbios name, %U 是一个用户名
+# 不能注释掉下面的[Profiles]共享。
+; logon path = \%L\Profiles\%U
+支持WINS部分：告诉samba组件的NMBD去激活WINS服务。
+; wins support = yes
+WINS服务器-告诉samba组件的NMBD成为一个WINS客户端。
+注意：samba即可以是一个WINS服务器，也可以是一个客户端，或都不是。
+; wins server = w.x.y.z
+WINS 代理-原文如下，没法翻译（Tells Samba to answer name resolution queries on behalf of a non WINS capable client,），执行这件事必须要求在网络中至少有一个Wins服务器。默认情况下是NO。
+; wins proxy = yes
+# DNS Proxy – 告诉samba是否经过DNS的nslookup试着去解析NETBIOS名。1.9.17的内置默认值是yes，目前已经改为1.9.18的no。
+dns proxy = no
+实例保存可以很简洁-系统默认值是_no_
+注意：可以在每一个共享基础上设置
+; preserve case = no
+; short preserve case = no
+默认实例是对于所有的DOS文件都大写
+; default case = lower
+对于此选项要很小心-它可能带来一些想不到的事情。
+; case sensitive = no
+[homes]
+comment = Home Directories
+browseable = no
+writable = yes
+valid users = %S
+create mode = 0664
+directory mode = 0775
+如果不想要samba不承认已经映射为guest的用户，可用如下设置
+; map to guest = bad user
+如果想创建netlogon目录给域登录，不要注释下面的内容。
+; [netlogon]
+; comment = Network Logon Service
+; path = /usr/local/samba/lib/netlogon
+; guest ok = yes
+; writable = no
+; share modes = no
+想提供一个指定的不固定的共享profile那么就不要注释下面的内容，默认使用用户主目录。
+;[Profiles]
+; path = /usr/local/samba/profiles
+; browseable = no
+; guest ok = yes
+注意：如果你有一个BSD风格的打印系统，则没有必须单独的特别指定每一个打印机。
+[printers]
+comment = All Printers
+path = /var/spool/samba
+browseable = no
+设置public=yes表示允许’guest account’打印
+guest ok = no
+writable = no
+printable = yes
+下面的内容对人们共享文件是有用的。
+;[tmp]
+; comment = Temporary file space
+; path = /tmp
+; read only = no
+; public = yes
+公用的可访问的目录，除了在staff组中的成员外，对其它人为只读
+;[public]
+; comment = Public Stuff
+; path = /home/nw
+; public = yes
+; writable = yes
+; printable = no
+; write list = @staff
+私有打印机，仅仅fred本人可用。打印池中的数据将被放到fred的主目录中。注意：fred用户无论在什么地方都必须对打印池有写访问的权限。
+;[yingou]
+; comment = qlj’s Printer
+; valid users = yingouqlj
+; path = /home/yingouqlj
+; public = no
+; writable = no
+; printable = yes
+私有目录，仅能对fred开放。注意fred对这个目录需要写访问的权限。
+;[fredsdir]
+; comment = qlj’s Service
+; path = /usr/somewhere/private
+; valid users = yingouqlj
+; public = no
+; writable = yes
+; printable = no
+允许你制作配置文件去引入的连接到这里的每一台机器都有不同的目录的服务。
+使用%U选去配置用户名，%m代替连接到的机器名。
+;[yingouqlj]
+; comment = PC Directories
+; path = /usr/local/pc/%m
+; public = no
+; writable = yes
+公共可访问的目录，对所有的用户都可读/写。注意：在这个目录中的所有由用户创建的文件都会被标识成默认用户所有。所以有访问仅限的用户可以删除别的用户的文件。很明显这个目录必须是可以被默认用户写的。另一个用户当然可以指定，这样所有的文件都将被那个用户所替代。
+[public]
+path = /tmp/aaaa
+public = yes
+guest ok = yes
+writable = yes
+printable = no
+下面的两个例子是怎样共享一个目录给两个用户，在这个共享目录中他们可以放置文件且分别属于各自所有。在这个设置中，目录将可以被两个用户同时使用且在其上有粘滞位保护。很明显，可以扩展为多个用户的情况。
+;[myshare]
+; comment = Mary’s and Fred’s stuff
+; path = /usr/somewhere/shared
+; valid users = mary fred
+; public = no
+; writable = yes
+; printable = no
+; create mask = 0765
+以下是个人实际的设置
+[sharedir]
+path = /home/nw
+public = yes
+guest ok = yes
+writable = yes

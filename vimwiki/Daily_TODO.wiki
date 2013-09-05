@@ -1,0 +1,7 @@
+= Todo 20130829 =
+  * [ ] Wuxianshangemng
+    * [ ] *Define resource names(urls).*
+    * [ ] Implement RESTFul method invoke for Django.
+    * [ ] Design the JSON representation(response).
+  * [ ] Reading
+    * [ ] SCIP 1.2

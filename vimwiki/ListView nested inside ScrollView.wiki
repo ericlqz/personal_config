@@ -1,0 +1,84 @@
+方法一，继续ListView类，重写onMeasure方法
+
+public class NestedListView extends ListView implements OnScrollListener,
+    OnTouchListener {
+private int listViewTouchAction;
+private static final int MAXIMUM_LIST_ITEMS_VIEWABLE = 4;
+
+@Override
+public void onScrollStateChanged(AbsListView view, int scrollState) {
+}
+
+@Override
+public void onScroll(AbsListView view, int firstVisibleItem,
+        int visibleItemCount, int totalItemCount) {
+    if (getAdapter() != null && getAdapter().getCount() > MAXIMUM_LIST_ITEMS_VIEWABLE) {
+        if (listViewTouchAction == MotionEvent.ACTION_MOVE) {
+            scrollBy(0, -1);
+        }
+    }
+}
+
+public NestedListView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    listViewTouchAction = -1;
+    setOnScrollListener(this);
+    setOnTouchListener(this);
+}
+
+@Override
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    int newHeight = 0;
+    final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+    int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+    if (heightMode != MeasureSpec.EXACTLY) {
+        ListAdapter listAdapter = getAdapter();
+        if (listAdapter != null && !listAdapter.isEmpty()) {
+            int listPosition = 0;
+            for (listPosition = 0; listPosition < listAdapter.getCount()
+                    && listPosition < MAXIMUM_LIST_ITEMS_VIEWABLE; listPosition++) {
+                View listItem = listAdapter.getView(listPosition, null,
+                        this);
+                listItem.measure(widthMeasureSpec, heightMeasureSpec);
+                newHeight += listItem.getMeasuredHeight();
+            }
+            newHeight += getDividerHeight() * listPosition;
+        }
+        if ((heightMode == MeasureSpec.AT_MOST) && (newHeight > heightSize)) {
+            if (newHeight > heightSize) {
+                newHeight = heightSize;
+            }
+        }
+    } else {
+        newHeight = getMeasuredHeight();
+    }
+    setMeasuredDimension(getMeasuredWidth(), newHeight);
+}
+
+
+方法二，写一个工具方法，设置LayoutParams，思路就是在设置完ListView的Adapter后，根据ListView的子项目重新计算ListView的高度，然后把高度再作为LayoutParams设置给ListView，这样它的高度就正确了。
+
+public class Utility {  
+    public static void setListViewHeightBasedOnChildren(ListView listView) {  
+        ListAdapter listAdapter = listView.getAdapter();   
+        if (listAdapter == null) {  
+            // pre-condition  
+            return;  
+        }  
+  
+        int totalHeight = 0;  
+        for (int i = 0; i < listAdapter.getCount(); i++) {  
+            View listItem = listAdapter.getView(i, null, listView);  
+            listItem.measure(0, 0);  
+            totalHeight += listItem.getMeasuredHeight();  
+        }  
+  
+        ViewGroup.LayoutParams params = listView.getLayoutParams();  
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));  
+        listView.setLayoutParams(params);  
+    }  
+}  
+    只要在设置ListView的Adapter后调用此静态方法即可让ListView正确的显示在其父ListView的ListItem中。但是要注意的是，子ListView的每个Item必须是LinearLayout，不能是其他的，因为其他的Layout(如RelativeLayout)没有重写onMeasure()，所以会在onMeasure()时抛出异常。
+    在ScrollView中嵌套ListView(或者ScrollView)的另外一个问题就是，子ScrollView中无法滑动的(如果它没有显示完全的话)，因为滑动事件会被父ScrollView吃掉，如果想要让子ScrollView也可以滑动，只能强行截取滑动事件，有牛人在论坛中发过代码说可以。虽然我没有亲自试过，但估计是可行的。
+    虽然在ScrollView中显示ScrollView在技术上的难题可以攻破，但是这样的设计却是非常差的用户体验因为用户会不容易看到和操作子ScrollView中的内容。

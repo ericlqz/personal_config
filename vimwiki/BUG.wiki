@@ -1,0 +1,26 @@
+# 1 数据库表格 
+I/Database( 2744): sqlite returned: error code = 1, msg = table favorite already exists
+E/Database( 2744): Failure 1 (table favorite already exists) on 0x213160 when executing 'CREATE TABLE favorite (_id INTEGER PRIMARY KEY,num_iid BIGINT,detail_url TEXT,pic_url TEXT,thumb_url TEXT,title TEXT,price TEXT,add_time DATETIME DEFAULT (datetime('now','localtime')));'
+E/SQLiteOpenHelper( 2744): Couldn't open liangshihui.db for writing (will try read-only):
+E/SQLiteOpenHelper( 2744): android.database.sqlite.SQLiteException: table favorite already exists: CREATE TABLE favorite (_id INTEGER PRIMARY KEY,num_iid BIGINT,detail_url TEXT,pic_url TEXT,thumb_url TEXT,title TEXT,price TEXT,add_time DATETIME DEFAULT (datetime('now','localtime')));
+E/SQLiteOpenHelper( 2744): 	at android.database.sqlite.SQLiteDatabase.native_execSQL(Native Method)
+E/SQLiteOpenHelper( 2744): 	at android.database.sqlite.SQLiteDatabase.execSQL(SQLiteDatabase.java:1763)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.provider.DatabaseHelper.onCreate(DatabaseHelper.java:198)
+E/SQLiteOpenHelper( 2744): 	at android.database.sqlite.SQLiteOpenHelper.getWritableDatabase(SQLiteOpenHelper.java:126)
+E/SQLiteOpenHelper( 2744): 	at android.database.sqlite.SQLiteOpenHelper.getReadableDatabase(SQLiteOpenHelper.java:187)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.dao.PosterDao.queryAll(PosterDao.java:57)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.model.PosterModel.loadFromDatabase(PosterModel.java:39)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.model.PosterModel.loadInBackground(PosterModel.java:114)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.model.PosterModel.loadInBackground(PosterModel.java:1)
+E/SQLiteOpenHelper( 2744): 	at android.support.v4.content.AsyncTaskLoader.onLoadInBackground(AsyncTaskLoader.java:240)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.model.PosterModel.onLoadInBackground(PosterModel.java:140)
+E/SQLiteOpenHelper( 2744): 	at com.wlunion.model.PosterModel.onLoadInBackground(PosterModel.java:1)
+E/SQLiteOpenHelper( 2744): 	at android.support.v4.content.AsyncTaskLoader$LoadTask.doInBackground(AsyncTaskLoader.java:51)
+E/SQLiteOpenHelper( 2744): 	at android.support.v4.content.AsyncTaskLoader$LoadTask.doInBackground(AsyncTaskLoader.java:40)
+E/SQLiteOpenHelper( 2744): 	at android.support.v4.content.ModernAsyncTask$2.call(ModernAsyncTask.java:123)
+E/SQLiteOpenHelper( 2744): 	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:306)
+E/SQLiteOpenHelper( 2744): 	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+E/SQLiteOpenHelper( 2744): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1088)
+E/SQLiteOpenHelper( 2744): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:581)
+E/SQLiteOpenHelper( 2744): 	at java.lang.Thread.run(Thread.java:1019)
+W/SQLiteOpenHelper( 2744): Opened liangshihui.db in read-only mode

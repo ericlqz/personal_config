@@ -1,0 +1,100 @@
+因为工作上的一些需要，需要在CentOS 64位机器上搭建一个编译Android项目的环境，Android SDK的环境还比较好搭建，直接下载android-sdk包即可，下载页面链接在这里http://developer.android.com/sdk/index.html,我下载的是sdk only包，体积比较小不包含ADT包（在服务器上用不着这些东西），因为是在服务器上，所以是木有任何桌面环境的，也就木有桌面浏览器啦。用wget或者curl下载即可。下载成功后，解压，可是目前目录下面只有tools目录，没有platform-tools目录，这个目录下的东西可不少哦，神马aapt、dx等等非常重要的工具都可是在这个里头哦，通常我们都是直接通过android命令就可以启动Android SDK Manager的界面管理工具，通过勾选不同平台就可以选择性地更新哪个版本的sdk了。服务器上木有swt环境啊（Android SDK Manager是基于SWT实现的），肿么办捏？程序员做的东西肯定是有命令行界面的嘛。come你的on，google一下吧，结果在这里，万能的google，程序员的福音stackoverflow上已经有人解决了该问题。大体就是通过
+
+android list sdk
+这个命令来查看有哪些sdk可以更新，你可以可以通过
+
+android --help list sdk
+来查看其他的一些选项，例如通过
+
+android  list sdk --extended --all
+来查看所有的可用的（包括Android认为已经过时的，例如2.3.3之类的各个android版本的SDK，而且会将名字给你写出来哦），例如：
+
+id: 61 or “extra-android-support”
+Type: Extra
+Desc: Android Support Library, revision 11
+By Android
+Install path: extras/android/support
+
+这个指的是就是Android的suppor-library，其他的各个名称也很直观啦，这些名字可以用的地方呢就是我们在使用
+android update -u
+命令进行SDK更新的时候可以通过设置filter来选择我们需要安装哪些包，例如下面这个命令：
+android update sdk -u –filter extra-google-google_play_services
+执行之后，就会选择Google Play Service这个包来下载更新，同理其他的都素一样的啦。例如通过
+android update sdk -u –filter platform-tool
+会自动下载platform-tools目录，你要是加上platform，使用
+android update sdk -u –filter platform-tool,platform
+就会下载所有版本的platform文件，其他的命令自己一个个尝试就好了。等下载完成之后，配置PATH变量吧
+export ANDROID_SDK_HOME=/root/android-sdk-linux
+export PATH=$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools:$PATH
+配置完SDK，那么开始配置NDK吧，毕竟很多时候我们在开发的过程中还是很有可能会使用到NDK的，那么开始吧，先下载NDK包吧，下载页面在这里，选择对应平台下载链接下载吧，下载成功后解压缩之后，配置环境变量吧：
+export ANDROID_NDK_HOME=/root/android-ndk-r8c
+export PATH=$ANDROID_NDK_HOME:$PATH
+配置好环境变量，加载一下环境变量，然后开始测试一下能否编译吧，cd到samples/hello-jni/jni目录下，直接执行ndk-build命令，提示错误
+./../../ndk-build: /root/android-ndk-r8c/prebuilt/linux-x86/bin/make: /lib/ld-linux.so.2: bad ELF interpreter: No such file or directory
+提示缺少某个依赖文件，Google之后得知，通过命令
+yum install glibc.i686
+装上glibc库即可，再次尝试ndk-build，依然提示错误
+/root/android-ndk-r8c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/../lib/gcc/arm-linux-androideabi/4.6/../../../../arm-linux-androideabi/bin/as: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+提示缺少zlib库文件依赖文件，Google之后得知，通过命令
+yum install zlib.i686
+装上zlib库文件之后，继续ndk-build，这次能顺利编译出so文件了，也成功将文件拷贝到对应的libs/armeabi目录下了，可以有这么一个警告信息：
+/root/android-ndk-r8c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-strip: /lib/libz.so.1: no version information available (required by /root/android-ndk-r8c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-strip)
+大体的意思就时因为/lib目录下的libz.so.1版本信息不对，导致arm-linux-androideabi-strip命令无法正常执行，这个会带来神马问题捏？我们来看看吧。其实就是/root/android-ndk-r8c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/下的arm-linux-androideabi-strip命令没有办法执行呗，那么这个命令是用来干嘛的，直接运行一下看看usage：
+Usage: /root/android-ndk-r8c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-strip <option(s)> in-file(s)
+Removes symbols and sections from files
+大体的意思就是通过这个命令可以将我们编译出来的so文件中的一些不必要的符号和片段给移除掉，可以让这个二进制文件更紧凑一些，运行效率会高一些？这个我真不知道，因为自己对于编译和链接这一块儿懂得真是太少了所以也就没有什么发言权啦。闲话少说，既然看到有问题，当然这个so肯定是可以用的（因为ndk-build并没有出错，而且还将so文件install到libs下对应的armeabi目录下了，我想Android开发团队肯定不会坑爹地将一个可能出错的编译输出文件install到该目录下的，所以说这个问题应该不大，肯定可以正常运行），只是看到这个警告信息让我非常的不爽，或者移除了这些符号和片段会让你的二进制文件运行起来更爽，或者可以让别人无法通过反编你的so来查看你调用了什么函数之类的，具体原因不明，反正我就是不爽，我要让这个警告信息给我消失。怎么办呢？
+
+肯定先google啦，google了很多，看了一些文档，大体得出结论是这个libz.so.1的版本比较低，而android这个命令可能比较新，依赖的库的版本比当前我的机器上/lib目录下的libz.so.1的版本要高，好吧，那就去下载源码自己编译吧。可以到这个zlib的官方页面上的这个下载地址（WTF，竟然需要翻墙）。下载后解压之后，cd到zlib目录下，三步走
+./configure
+make
+make install
+整个过程很顺利，编译后的文件都被放到/usr/local/lib下了，这个可以通过编译安装输出看出来
+[root@helihua zlib-1.2.7]# make install
+cp libz.a /usr/local/lib
+chmod 644 /usr/local/lib/libz.a
+cp libz.so.1.2.7 /usr/local/lib
+chmod 755 /usr/local/lib/libz.so.1.2.7
+cp zlib.3 /usr/local/share/man/man3
+chmod 644 /usr/local/share/man/man3/zlib.3
+cp zlib.pc /usr/local/lib/pkgconfig
+chmod 644 /usr/local/lib/pkgconfig/zlib.pc
+cp zlib.h zconf.h /usr/local/include
+chmod 644 /usr/local/include/zlib.h /usr/local/include/zconf.h
+然后将/lib/libz.so.1文件先备份一下，将/usr/local/lib目录下的libz.so.1链接到/lib目录下，因为arm-linux-androideabi-strip这个命令链接的路径中依赖的/lib目录下的libz.so.1，当然我们也可以通过修改LD_CLASSPATH的方式来让arm-linux-androideabi-strip这个命令加载/usr/local/lib目录下的libz.so.1文件，可惜我现在不想这么麻烦，因为我现在也不知道具体做法，我懒得去Google了，我的方法是直接将该文件链接到/lib目录下，替换系统原有的libz.so.1
+mv /lib/libz.so.1 /lib/libz.so.1_backup
+ln -s /usr/local/lib/libz.so.1 /lib/libz.so.1
+但是童鞋们啊，这还是不够滴，因为现在的系统捏是尼玛64位滴，而该死的Android都是基于32开发的，它依赖的是32位的libz，你现在执行ndk-build不出意外的话，你会碰到这个错误信息：
+[root@helihua jni]# ../../../ndk-build
+Gdbserver : [arm-linux-androideabi-4.6] libs/armeabi/gdbserver
+Gdbsetup : libs/armeabi/gdb.setup
+Install : libhello-jni.so => libs/armeabi/libhello-jni.so
+/root/android-ndk-r8c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-strip: error while loading shared libraries: libz.so.1: wrong ELF class: ELFCLASS64
+make: *** [/root/android-ndk-r8c/samples/hello-jni/libs/armeabi/libhello-jni.so] Error 127
+make: *** Deleting file `/root/android-ndk-r8c/samples/hello-jni/libs/armeabi/libhello-jni.so’
+唉，那么就只好开始编译32位的咯，怎么编呢，还是Google吧，程序员福音stackoverflow上又有对应的问题，在这里，通过
+export CFLAGS=-m32
+指定当前编译目标平台位32位滴，直接在bash下使用该命令只会在当前bash会话期间有效，不会影响到其他bash会话和下次你重新登录bash时的编译环境设置，非常有用，我们只需要在这次编译libz时才需要如此，正中下怀啊。果断重复上面的三步走啊:
+./configure
+make
+make install
+这次执行./configure就不会那么顺利了，会出现这样一个错误：
+./configure
+Checking for gcc…
+.
+.
+.
+Looking for a four-byte integer type… Not found.
+如果这个时候你选择继续make的话，显然会出错滴，错误如下:
+/usr/include/gnu/stubs.h:7:27: error: gnu/stubs-32.h: No such file or directory
+通过该命令:
+yum install glibc-devel.i386
+安装对应的开发环境，重新执行上面的三步，
+成功后再重复设置/lib目录的操作:
+mv /lib/libz.so.1 /lib/libz.so.1_backup
+ln -s /usr/local/lib/libz.so.1 /lib/libz.so.1
+然后再尝试执行ndk-build命令，这次就不再提示任何警告和信息了，输出干净多了：
+Gdbserver : [arm-linux-androideabi-4.6] libs/armeabi/gdbserver
+Gdbsetup : libs/armeabi/gdb.setup
+Install : libhello-jni.so => libs/armeabi/libhello-jni.so
+回过头来再想想，为什么会出现这些问题呢？
+前两个问题是因为Android NDK中的某些命令依赖于系统的一些库，没有直接安装就好了，这个没有过多讨论的余地，后面那个出现版本不一致导致的警告信息，我个人的理解是这样的，因为我们直接使用的都是Android NDK prebuild的命令，而这些命令可能在Google的编译服务器上依赖的是更高版本的库，所以导致在我们的环境中会出现版本不一致的问题。因为NDK中带着源码，我倒是觉得可以通过在自己的机器上编译一个NDK出来，应该就可以解决这个问题，当然前提是NDK的源码中没有引用到更高版本的一些头文件，另外编译源码可能需要我们安装很多的开发环境（就是很多的库和头文件），点到为止，有机会可以一试。

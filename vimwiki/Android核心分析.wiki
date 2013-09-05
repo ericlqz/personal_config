@@ -1,0 +1,23 @@
+iAndroid      JVM
+      
+      Linux
+
+Android中包含一个JVM，JVM运行在Linux之上，Android构建在JVM之上。
+
+在静态的分层上，我们可以将Android分为
+    Applications             --
+    Application Framework      |- Android
+    Libraries & DVM	     --
+    
+    Linux Core		     --   Linux
+
+动态来看，从操作系统的角度来看，Android其实就是一堆Linnux应用的集合; 从Linux的的内核空间及进程空间来看，每个Android应用对应Linux的一个进程。
+
+在我们的理解来看，可以分为Android空间及非Android空间，在Android概念空间中，我们将面对的是Activity，Service等，而不是Linux进程。
+
+
+Binder ===> Android IPC机制 ===> 轻量级公共对象请求代理框架(CORBA)
+
+
+面向对象技术
+

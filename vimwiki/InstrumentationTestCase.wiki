@@ -1,0 +1,13 @@
+junit.framework.Assert
+  ->junit.framework.TestCase
+     ->android.test.InstrumentationTestCase
+
+该类继承自TestCase，并提供了对于Instrumentation的访问。
+文档请参见 [http://developer.android.com/reference/android/test/InstrumentationTestCase.html InstrumentationTestCase]
+
+主要提供了以下功能：
+1. 注入及获取Instrumentation的功能
+2. 启动Activity
+3. 发送KeyEvent
+
+

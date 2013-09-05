@@ -1,0 +1,11 @@
+Try First:
+
+adb kill-server
+adb start-server
+adb devices
+
+If it not work,
+Try Second:
+
+add this ↓ line to /etc/udev/rules.d/51-android.rules
+SUBSYSTEM=="usb", SYSFS{idVendor}=="0bb4", MODE="0666"

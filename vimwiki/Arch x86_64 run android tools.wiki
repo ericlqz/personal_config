@@ -1,0 +1,5 @@
+
+Andorid的tools及platform-tools目录中的可执行文件多为32位程序。
+若运行，须32位运行库支持
+
+pacman -S lib32-gcc-libs lib32-glibc lib32-libx11 lib32-libxau lib32-libxcb lib32-libxdmcp lib32-libxext lib32-libxrender lib32-alsa-lib lib32-libstdc++5 lib32-libxv lib32-ncurses lib32-openal lib32-sdl lib32-zlib

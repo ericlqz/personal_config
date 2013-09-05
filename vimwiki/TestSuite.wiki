@@ -1,0 +1,2 @@
+Q1: TestSuite是什么呢?
+A:  可以将TestSuite看作是包裹测试的一个容器，如果将TestCase看作叶子的话，那TestSuite便是树枝节点。实际上TestCase、TestSuite以及TestSuuite组成了“组合模式”。

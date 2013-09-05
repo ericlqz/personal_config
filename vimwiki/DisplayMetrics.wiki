@@ -1,0 +1,56 @@
+以下内容只是对Supporting Multiple Screens这部分文档的总结，只是对初看者启到一个提示作用，如果看完后还是不能有一个很好的理解，可以参考文档 
+
+基本概念 
+屏幕大小：以对角线的长度来衡量屏幕的大小 
+
+分辨率：屏幕上的像素个数。如320x480，就表示宽方向有320个像素，高方向有480个像素，整个屏幕有153,600个像素。 
+
+宽高比：宽的物理长度/高的物理长度，如：6cm/8cm。而不是用像素的比值来表示，如320/480。 
+
+屏幕密度：也可以是像素密度，即单位面积上存在多少个像素，单位是dpi。160dpi就是单位面积上有160个像素，240dpi就是单位面积上有240个像素。 
+屏幕的密度是由分辨率和屏幕大小（物理尺寸）决定的，320x480的分辨率在3寸的屏°240dp的屏幕上去时，android就会自动将1dp调整为1.5px。 
+
+android将所有的密度泛化为：ldpi, mdpi, hdpi。将屏幕大小泛化为small, medium, large, xlarge。
+
+Manifest.xml中的support-screens元素 
+<support-screens 
+    android:smallScreens="false" 
+    android:mediumScreens="false" 
+    android:largeScreens="false" 
+    android:xlargeScreens="false" 
+    android:anyDensity="false" 
+/> 
+
+anyDensity：程序是否可在任何密度的屏幕上运行。该值主要是为使用了px作为单位的程序设计的。 
+设为false时，anroid会启用density-compability特性，根据不同的屏幕密度将px值转换为合理的大小。 
+设为true时，就会关闭density-compability特性。 
+如果程序是以dp作为长度单位的，无论设为false, true都可以。
+
+xxxScreens：是否支持某屏幕。 
+设为false时，表示不支持该大小的屏幕，android会启用size-compability特性，即只显示标准屏幕(normal size, mdpi)的大小。 
+设为true时，表示支持该大小的屏幕，android就不会做任何处理，将程序直接显示。 
+
+android为兼容多分辨率提供的兼容特性 
+density-compatibility： 
+1. dp，密度无关的单位 
+2. 根据屏幕密度将px转换为合理的值 
+3. pre-scale bitmap，根据当前的屏幕，从具有相应后缀的资源目录中加载资源(如：drawable-hdpi)；同时，在相应后缀中无法找到指定资源, 就加载默认资源目录(drawable或drawable-mdpi)中的资源，并进行相应的缩放。 
+4. auto-scale bitmap，自己创建bitmap时，android会为对其进行缩放。 
+
+size-compatibility: 
+在support-screens的xxxScreen属性设为false，就会启用该特性。就是当程序运行在大屏幕上时，还是以正常屏幕的大小显示，其余的部分留黑。
+
+屏幕密度，分辨率等数据获取和转换 
+
+DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();  
+  
+displayMetrics.density; // density比例，160dpi的为1，240dpi的为1.5（以160dpi为标准，240/160dpi）  
+  
+displayMetrics.densityDpi; // 屏幕密度。160dpi，240dpi等  
+displayMetrics.scaledDensity; // 字体缩放比例  
+  
+displayMetrics.heightPixels; // 高上有多少个像素  
+displayMetrics.widthPixels; // 宽上有多少个像素  
+  
+displayMetrics.xdpi; // 以dp值来表示的宽  
+displayMetrics.ydpi; // 以dp值来表示的高 

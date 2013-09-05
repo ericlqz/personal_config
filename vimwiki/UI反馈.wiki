@@ -1,0 +1,56 @@
+# 反馈:
+  # 公共
+    * Title_bar_bg.png vs Title_bg.png
+    * 3G.png
+    * Menu_Icon中"我的良食"字样不全
+  # 推荐
+    * Home_internet_error.png vs Home_internet_error_02.png 网络提示文本
+  # 逛
+    * Guang_update_loading.png vs Guang_upate_loading_02.png 应为上拉加载而不是下拉刷新
+  # 详情
+  # 我的良食
+    * YuanTu/My/information_center.png 消息无图片、应为纯文字
+    * YuanTu/My/My/My_comment_effect.png 
+
+# 暂未用到图片:
+  * YuanTu/Home/Home_3G_internet.png    热销美食
+  * YuanTu/Home/Home_Error.png          良食推荐
+  * YuanTu/Information/Comment.png      全部评论
+  * YuanTu/My/My_02_login.png           无此登录页面
+
+
+# 推荐 
+# 逛
+  * 无下拉刷新
+  * 上拉刷新的交互、或者说图示
+  * 划动时，标题及tab的显示/消失
+
+# 字体大小设置
+
+
+
+# 用户中心
+  * 图片文字去除，否则无法对齐文字与数字提示 
+ 
+# 有事您说话  
+  * comment_list_bg & comment_list_bg02图片宽度放小
+  * 右上角发送按钮
+  * 输入框背景
+  * 反馈记录列表背景框做小图
+
+# UI修改
+  * 扫描页面灰色背景 颜色、透明度
+  * 喜欢背景框 背景色, 做小
+  * 产品详情页面，商品详情背景框阴影被拉
+  * 产品详情页面，没有'销售'
+  * 设置页面，版本更新的'new'图标
+
+# 吕
+  * 关于页面二维码、店铺介绍
+  * 
+
+# UI修改
+  * 侧边栏列表背景切小图
+  * 侧边栏title的背景框下面有一段空白
+  * 逛频道右上角第二张图切反了
+  * '我的'左上角的设置按钮

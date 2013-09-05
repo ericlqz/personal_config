@@ -1,0 +1,21 @@
+java.lang.OutOfMemoryError: Java heap space
+在JVM中如果98％的时间是用于GC且可用的 Heap size 不足2％的时候将抛出此异常信息。
+JVM堆的设置是指java程序运行过程中JVM可以调配使用的内存空间的设置.JVM在启动的时候会自动设置Heap size的值，其初始空间(即-Xms)是物理内存的1/64，最大空间(-Xmx)是物理内存的1/4。可以利用JVM提供的-Xmn -Xms -Xmx等选项可进行设置。
+
+编辑tomcat的catalina.sh文件，在第一行的后面增加一句：
+JAVA_OPTS='-server -Xms256m -Xmx512m -XX:PermSize=128M -XX:MaxPermSize=256M'
+注意：单引号不能少，-server表示以server模式运行(运行效率比默认的client高很多，自己云去测试)，-Xms256m是最小内存，-Xmx512m是最大内存，其中的256与512可根据你自己的内存做相应调整，PermSize/MaxPermSize最小/最大堆大小.一般报内存不足时,都是说这个太小,堆空间剩余小于5%就会警告,建议把这个稍微设大一点,不过要视自己机器内存大小来设置,我自己的文件如下：
+#!/bin/sh
+JAVA_OPTS='-server -Xms1024m -Xmx1024m XX:PermSize=128M -XX:MaxPermSize=256M'
+
+◆堆(Heap)和非堆(Non-heap)内存
+
+按照官方的说法：“Java 虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在 Java 虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heap memory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。
+
+◆堆内存分配
+
+JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC 后调整堆的大小。
+
+◆非堆内存分配
+
+JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。

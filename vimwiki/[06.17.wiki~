@@ -1,0 +1,4 @@
+# 将APK包缩小至1.6M左右
+  * 将jackson库换为gson库
+  * 重新打包asmack包
+# TODO 网络管理模块

@@ -1,0 +1,5 @@
+Q1: 为什么需要Junit?
+A:  正如之前所说的“维护测试代码可能带来的工作量”，那么我们就需要规范我们的代码，使之符合某一固定的格式，最好IDE工具也支持这些规范。所以呀，deng~deng~deng~deng，Junit同志就诞生啦。
+
+Q2: Junit是嘛玩意呢?
+A:  Junit是Erich Gamma和Kent Beck编写的一个Open Source的回归测试框架(regression testing framework)，用于给Java开发人员编写单元测试之用。～泪牛满面呀～。所谓框架吧，就是这两个哥们定下了一些条条框框，你编写的测试代码必须遵循这些个条条框框: 比如呀继承某个类呀，实现某个接口呀，这就是你妹的规范。而且吧，Junit得到了大多数软件工程师的认可，IDE也支持得很好。 

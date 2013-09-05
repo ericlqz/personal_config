@@ -1,0 +1,13 @@
+# Difference between 'django-admin.py startapp' vs 'django-admin.py startproject'?
+  * use 'startapp myapp', got:
+     ├── __init__.py
+     ├── models.py
+     ├── tests.py
+     └── views.py
+  * use 'startproejct myproject', got:
+     ├── manage.py
+     └── myproject
+         ├── __init__.py
+         ├── settings.py
+         ├── urls.py
+         └── wsgi.py

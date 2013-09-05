@@ -1,0 +1,1 @@
+在8080商品的Connector加入URIEncoding='UTF-8'的设置。

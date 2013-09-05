@@ -1,0 +1,8 @@
+同一个JAVA类经过不同的编译器编译得到的CLASS文件的常量池有差别
+
+与书上相比，少了以下三个：
+LocalVariableTable
+this
+Lcom/lqz/lzq/TestClass
+
+顺序也有所不同

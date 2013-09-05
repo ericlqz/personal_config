@@ -1,0 +1,22 @@
+Ubuntu installs Mysql at /etc/mysql/ by default. Now we need to set a root password.
+
+mysql -u root
+mysql> SET PASSWORD FOR 'ROOT'@'LOCALHOST"
+> = PASSWORD('new_password');
+
+Now while we’re still here, we’ll create a new HOST for root and allow root to login from anywhere.
+
+mysql> GRANT ALL PRIVILEGES ON * . *(no blank) TO 'root'@'%'
+> IDENTIFIED BY 'password' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+mysql> exit
+
+Thanks to Thom for the Flush Privileges comment.  I think it depends on other settings in your MySQL setup, since I didn’t have to, but just in case, I’ve added it here.  We’re almost done now. We just have to tell Mysql to allow remote logins.
+
+sudo vi /etc/mysql/my.cnf
+
+Out-of-the-box, MySQL only allows connections from the localhost identified by the IP Address of 127.0.0.1.  We need to remove that restriction, so find the line that says
+
+bind-address = 127.0.0.1
+
+and comment it out. 

@@ -1,0 +1,56 @@
+Discriminative vs. Generative model
+
+Discriminative Model是判别模型，又可以称为条件模型，或条件概率模型。
+Generative Model是生成模型，又叫产生式模型。
+二者的本质区别是
+discriminative model 估计的是条件概率分布(conditional distribution)p(class|context)
+generative model 估计的是联合概率分布（joint probability distribution）p()
+
+常见的Generative Model主要有：
+– Gaussians, Naive Bayes, Mixtures of multinomials
+– Mixtures of Gaussians, Mixtures of experts, HMMs
+– Sigmoidal belief networks, Bayesian networks
+– Markov random fields
+
+常见的Discriminative Model主要有：
+– logistic regression
+– SVMs
+– traditional neural networks
+– Nearest neighbor
+
+Successes of Generative Methods：
+? NLP
+– Traditional rule-based or Boolean logic systems
+Dialog and Lexis-Nexis) are giving way to statistical
+approaches (Markov models and stochastic context
+grammars)
+? Medical Diagnosis
+– QMR knowledge base, initially a heuristic expert
+systems for reasoning about diseases and symptoms
+been augmented with decision theoretic formulation
+? Genomics and Bioinformatics
+– Sequences represented as generative HMMs
+
+主要应用Discriminative Model：
+? Image and document classification
+? Biosequence analysis
+? Time series prediction
+
+
+Discriminative Model缺点：
+? Lack elegance of generative
+– Priors, structure, uncertainty
+? Alternative notions of penalty functions,
+regularization, kernel functions
+? Feel like black-boxes
+– Relationships between variables are not explicit
+and visualizable
+
+
+Bridging Generative and Discriminative：
+? Can performance of SVMs be combined
+elegantly with flexible Bayesian statistics?
+? Maximum Entropy Discrimination marries
+both methods
+– Solve over a distribution of parameters (a
+distribution over solutions)

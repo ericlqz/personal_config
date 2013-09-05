@@ -1,0 +1,1 @@
+I cannot find gtk2-immodule-xim in Arch

@@ -1,0 +1,57 @@
+1.Arch 使用/etc/rc.conf作为系统的主要配置文件，主要用于系统的启动。
+  LOCALICATION
+  HARDWARE
+  NETWORKING
+  DEAMONS
+
+2./etc/fstab,(file system table). 
+该文件列出所有可用的磁盘或分区， 并指明它们初始化的方式或整合至全局文件系统的方式。一般为mount命令读取。
+
+3./etc/mkinitcpio.conf
+此文件负责微调初始内存文件系统initramfs。initramfs是启动时供内核读取的压缩镜像，目的是引导系统使其能够读取根文件系统，所以它需要装入IDE，SCSI，SATA，USB/FW等设备模块。
+
+4./etc/modprobe.d/modprobe.conf
+设置内核模块的装入
+
+5./etc/resolv.conf
+resolver是C库中一系列访问DNS的函数。解析配置文件/etc/resolv.conf包含了解析器初始化时读取的信息。
+
+6./etc/hosts
+此文件将IP地址与主机名和别名对应。
+
+7./etc/locale.gen
+locale-gen命令从/etc/locale.gen读取系统的locales信息。
+
+8./etc/pacman.conf
+pacman的配置文件
+
+9./etc/pacman.d/mirrorlist
+设置pacman的软件仓库镜像站
+
+
+问题集：
+1. Pacman “filesystem: /etc/mtab exists in filesystem”
+When upgrading to `filesystem-2011.12` there will be a conflict with
+`/etc/mtab`.
+
+Install the package as follows:
+
+`pacman -S filesystem --force`
+
+It is strongly advised to avoid the `--force` or `-f` switch as it is not safe.
+However, in this particular case it is needed as deleting `/etc/mtab` manually
+would break pacman.
+
+The reason for the conflict is that the file used to be generated at boot and
+hence not owned by any package. Now it is a symlink to `/proc/self/mounts` owned
+by `filesystem`. This change means that `initscripts` no longer requires write
+access to the rootfs (though other packages might).
+
+2. Pacman "filesystem: /etc/profile.d/locale.sh exists in filesystem"
+ummary: Please manually delete /etc/profile.d/locale.sh before updating. If . /etc/rc.conf fails in your login shell, please read the full announcement.
+
+Changes to locale handling:
+
+/etc/profile.d/locale.sh is now a static file that sources the correct config files in order to set your locale, rather than being generated at boot. The benefit of this is one less write to /etc, and it allows changes to the locale to take effect without rebooting (just relogin).
+
+We add support for /etc/locale.conf. The settings in this file takes precedence over /etc/rc.conf, and those who use shells that cannot source /etc/rc.conf are required to move to this new format. /etc/locale.conf contains a new-line separated list of variable assignments. The variables we support are LANG as well as the LC_* variables (with the exception of LC_ALL). The format is shared with systemd.

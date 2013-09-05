@@ -1,0 +1,40 @@
+Initial Step:
+1.  django-admin.py startproject mysite
+    在当前目录下创建mysite目录，目录结构如下:
+    (d)mysite
+        |
+      	|--(f)managepy
+	|
+	|--(d)mysite
+		|
+		|--(f)__init__.py
+		|
+		|--(f)settings.py
+		|
+		|--(f)urls.py
+		|
+		|--(f)wsgi.py
+
+2.  manage.py VS django-admin.py
+    manage.py是对django-admin.py的封装，除了将请求委托给django-damin外，还偷偷摸摸干了两件事:
+    a. 将你的project path添加到sys.path中
+    b. 将环境变量DJANGO_SETTINGS_MODULE设为你的project's setting.py文件
+
+3.  python manage.py startapp polls
+    在当前目录下创建polls目录，目录结构如下:
+    (d)polls
+	|
+	|--(f)__init__.py
+	|
+	|--(f)models.py
+	|
+	|--(f)tests.py
+	|
+	|--(f)views.py
+
+4.  polls.models.py
+    Django将根据此文件创建数据库及数据库访问API(用于访问在models.py文件中定义的model)
+
+Q&A
+Q1. What's module level variable? for example compare to Java?
+A:  

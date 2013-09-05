@@ -1,0 +1,4 @@
+java_home/bin/java
+
+应该是。。。
+有待考证

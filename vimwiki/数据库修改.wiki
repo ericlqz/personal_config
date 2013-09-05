@@ -1,0 +1,29 @@
+#. 数据库地址
+    * IP: 42.96.150.219
+    * MySQL use: root
+    * MySQL pass: ligao2013
+
+#. 添加数据表
+    * bindaccount: 绑定淘宝帐户
+    * bindfavorite: 绑定帐户的喜欢数据
+    * clientuser: 客户端用户
+    * statisticsvisit：商品访问数据统计信息    <- user_sales表
+    * statisticsfavorite：商品喜欢数据统计信息 <- user_sales表
+    * version：APP版本数据
+
+#. 修改数据表：
+    * productinfo: 添加 `detail_url`varchar(255) NOT NULL 字段,表示商品的淘宝详情页面, 后台PHP代码需要添加存储此字段的逻辑
+    * user_feedback: (原有字段看不大懂, 或者解释下原有字段的意义)添加了若干字段，包括：
+      * client：提问用户
+      * question：提问内容
+      * question_date：提问时间
+      * type：提问类型
+      * answer：卖家回答内容
+      * answer_date：卖家回答时间
+      
+#. 未定/问题：
+    * softwarestat表中channel_name为渠道名，但传入客户端的为channel_id为渠道ID值;
+    * user_sales表由statisticsvisit+statisticsfavorite两个表替代, user_sales无法实现按文档中的按'位置'统计数据
+    * productinfo: 表中是否要添加卖家id-'uid'字段
+      * 在客户端请求所有商品时，需要根据卖家uid获得卖家对应的所有商品类别，再根据所有类别取出商品；数据库查询请求较重;
+

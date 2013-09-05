@@ -1,0 +1,44 @@
+1. For Bugzilla you need...
+
+Per l(5.8.1 or above)
+MySQL
+Apache2
+Bugzilla
+Perl modules
+Bugzilla using apache
+
+2. Deploy:
+  * Add Mysql Account:
+    - sudo useradd -M bugzilla
+    - sudo passwd bugzilla
+    - mysql -u root -p
+    - mysql> create database bugzilla;
+    - mysql> grant all privileges on bugzilla.* to bugzilla@localhost;
+  * Config Apache:
+    - sudo vim /etc/apache2/site-enabled/000-default 
+    and add this beyond 'ScriptAlais cgi-bin'
+    - Alias /bugzilla/ /var/www/bugzilla/
+    - <directory /var/www/bugzilla>
+    - Addhandler cgi-script .cgi .pl
+    - Options +Indexes +ExecCGI +FollowSymLinks
+    - DirectoryIndex index.cgi
+    - AllowOverride Limit
+    - </directory>
+  * Install Barzilla:
+    - sudo tar -xvf bugzilla-4.2.5.tar
+    - sudo mv /download/bugzilla-4.2.5 /usr/local/
+    - sudo ln -s /usr/local/bugzilla-4.2.5 /var/www/bugzilla
+    - sudo chown -R www-data:www-data /var/www/bugzilla
+  * Perl modules:
+    - cd /var/www/bugzilla/
+    - sudo ./checksetup.pl --check-modules
+    install the required modules
+    then run 'sudo ./checksetup.pl' again.
+    - sudo vim localconfig
+    - $webservergroup = 'apache2';
+    - $db_name = 'bugzilla';
+    - $db_user = 'bugzilla';
+    - $db_pass = 'bugzilla@pwpspaswsword';
+    - cd /var/www/bugzilla/
+    - sudo ./checksetup.pl
+  

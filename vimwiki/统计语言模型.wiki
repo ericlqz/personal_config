@@ -1,0 +1,2 @@
+Statictical Language Model
+用于识别一个文字序列是否能构成一个人类可以理解的句子

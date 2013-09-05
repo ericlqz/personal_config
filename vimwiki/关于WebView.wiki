@@ -1,0 +1,33 @@
+在WebView的设计中，不是什么事都要WebView类干的，有些杂事是分给其他人的，这样WebView专心干好自己的解析、渲染工作就行了。WebViewClient就是帮助WebView处理各种通知、请求事件的，具体来说包括： 
+
+  onLoadResource 
+
+  onPageStart 
+
+  onPageFinish 
+
+  onReceiveError 
+
+  onReceivedHttpAuthRequest 
+
+
+
+WebChromeClient是辅助WebView处理Javascript的对话框，网站图标，网站title，加载进度等 
+
+
+
+  onCloseWindow(关闭WebView) 
+
+  onCreateWindow() 
+
+  onJsAlert (WebView上alert是弹不出来东西的，需要定制你的WebChromeClient处理弹出) 
+
+  onJsPrompt 
+
+  onJsConfirm 
+
+  onProgressChanged 
+
+  onReceivedIcon 
+
+  onReceivedTitle

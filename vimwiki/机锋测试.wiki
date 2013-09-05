@@ -1,0 +1,21 @@
+# NullPointerException
+  * 机型： *OPPO R811 4.0.4*, OPPO T29 4.0.4, 中兴 N880E 4.1.1, 联想 P770 4.1.1, 三星 Galaxy Nexus (I9250) 4.1, *三星 Galaxy Note (GT-N7000) 2.3.6*, *魅族 MX2 (M040) 4.1.1*
+  * com.tools.manage.bitmap.ImageCache.getDiskCacheDir(ImageCache.java:624)
+
+# RetryHandler NullPointerException
+  * 机型：联想 Idea Pad (K2110A) 4.0.4, 华为 荣耀 (U8860) 2.3.6
+  * [[rn_log]]
+  * 解析：某些手机缺乏一些HTTP执行上下文属性
+
+# Database locked
+  * 机型：三星 Galaxy SII (I9100) 2.3.4三星 Galaxy SII (I9100) 2.3.4, 三星 Galaxy Tab II (GT-P3110) 4.0.4, 三星 Galaxy Note (GT-I9228) 4.0.4, 中兴 V881 2.3.5
+  * [[dl_log]]
+  * 解析：某些手机在多个DatabaseHelper的情况下，造成的写时数据库为锁定的情况
+
+# Database already exists
+  * 机型：索尼 Xperia L (S36h) 4.1.2
+  * [[ds_log]]
+
+# 优化
+  * 内存使用太高，平均40几M, JAVA内存分析
+  * CPU 6.7%

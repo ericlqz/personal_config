@@ -1,0 +1,1 @@
+* [[Generator Model And Discriminatve Model]]

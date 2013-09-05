@@ -1,0 +1,1 @@
+ mysql>create database mydb character set utf-8;

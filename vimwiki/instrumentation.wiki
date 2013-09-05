@@ -1,0 +1,14 @@
+java.lang.object
+    -> android.app.Instrumentation
+
+参见文档 [http://developer.android.com/reference/android/app/Instrumentation.html]
+
+    Base class for implementing application instrumentation code. when running with instrumentation turned on(An Instrumentation implementation is described to the system through an AndroidManifest.xml's <Instrumentation> tag), this class will be instanticated for you before any of the application code,allowing you to monitor all of the interation the system has with the application.
+
+主要提供功能如下：
+1. 添加删除ActivityMonitor
+2. 调用Activity的Life Cicle方法
+3. 简单性能统计接口(统计内存分配，intent等)
+4. 实例化Activity，发送KeyEvent
+5. 自身Life Cycle方法
+6. ......

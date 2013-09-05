@@ -1,0 +1,100 @@
+1.  Dev Server 1206
+    Account : realgoal  ligao2012
+    
+    * MySQL
+      * Account ：root  ligao2012
+
+2. 阿里云
+    电话 0571-85025885
+
+    machine: 219
+    root: ligao2013
+    mysql: ligao2013
+    
+    machine: 121.199.42.26
+    root:a5adf7c8
+    mysql:ligao2013
+
+    machine: 121.199.42.48
+    root:a6acb04d
+    mysql:ligao2013
+3. 友盟
+    * 立高
+      * linqingzu@gmail.com
+      * Qqssigess88
+      * Android AppKey: 5178a24d56240b615000d3f7
+    * 无线商盟
+      * wirelessunion@163.com
+      * wlunionhkqy
+      * Android AppKey: 51d21e5356240bcce3015ac6
+
+4. 新浪微博
+    * realgoal@126.com
+    * lg2013
+    
+5. 腾讯开发者帐号
+    * Number: 1497509868
+    * Email: realgoal@126.com
+    * Nick : 林镯
+    * Pssswd: Qqssigess88
+
+5. QQ互联开放空间
+    * connect.qq.com/manage
+
+6. 腾讯微博
+    * App Key: 801348069
+    * App Secret: ae5b135a13e0cf0e27db32bfef781a3b
+    * 运营帐号
+      * realgoal_bj@163.com
+      * ligao2013
+
+7. 微信
+    * DEBUG
+      * AppID: wx0e09cc350b4b8f87
+      * AppKey: 26ecc1d1f6fbb75de58189e89b16ca43
+      * SIGN: 1f7b9da7bde384692257a413985eea40
+    * RELEASE
+      * AppID：wx37c30efa7c5afa0f
+      * AppKeydb ：61fb91faa90df8f755529c5d0cc63c57
+    * 立高优选
+      * SIGN: 08e4ead9d423f0e408ae664323ac95ff
+      * APPID: wx1133ef6eae0148c6
+      * KEY: 719b4c3688d842654020463368e7d702 
+
+# 邮箱
+  * 126测试邮箱
+    * realgoal@126.com
+    * lg2013
+
+# 优惠测试帐号
+  * 42.96.150.22
+  * 冬山入睡 
+  * Wv19820217
+  * 24506628003
+
+# 无线商盟
+  * 测试服务器
+    * 115.28.48.198
+    * 916e1bd9
+  * 友盟
+    * wirelessunion@163.com
+    * wlunionhkqy
+    * Android AppKey: 51d21e5356240bcce3015ac6
+  * 新浪微博
+    * wirelessunion@163.com
+    * wlunionhkqy
+    * APP KEY: 2289057362
+    * APP SECRET: b8500335840bbe894618279d0d544733
+    * APP 签名：1f7b9da7bde384692257a413985eea40
+  * 腾讯
+    * QQ
+      * QQ号:2898518289
+      * 密码:wlunionhkqy
+      * 帐号:wirelessunion@163.com
+    * QQ空间
+      * connect.qq.com/manage
+      * APP ID：100476925
+      * APP KEY：3a19296583e7d725e4ac83a40835f279
+    * 腾讯微博
+      * APP ID: 801388843
+      * APP KEY: 4bf300e9e5c1e4586bc057a959ba04c6

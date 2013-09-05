@@ -1,0 +1,6 @@
+1./etc/init.d/mysql stop
+2./usr/bin/mysqld_safe --skip-grant-tables &
+3.mysql --user=root mysql
+4.update user set Password=PASSWORD('new-password-here') WHERE User='root';
+5./etc/init.d/mysql
+6.mysql --user=root --pass=new-password-here

@@ -1,0 +1,10 @@
+编辑winmanager.vim
+
+function! <SID>ToggleWindowsManager()  
+   if IsWinManagerVisible()  
+      call s:CloseWindowsManager()  
+   else  
+      call s:StartWindowsManager()  
+      exe 'q'  // 添加此行代码
+   end  
+endfunction 

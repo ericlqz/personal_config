@@ -1,0 +1,25 @@
+# 语法高亮
+# 代码补全
+# 错误提示
+# 文件浏览
+# 函数跳转
+# 代码格式化
+
+= JS =
+# 语法高亮: javascript.vim
+  * VIM自带javascript语法高亮，但是自带的那个位于syntax目录下的javascript.vim那个配置文件比较弱，有很多关键词没有高亮，我是到 www.vim.org 那里搜索一个最新的javascript.vim的语法高亮插件替代了原来的那个文件的。
+  
+# 代码补全: neocomplcache
+  * VIM自带自动补全的功能，不过VIM有一个强大的插件叫做neocomplcache，大家可以到网上搜索一下这个插件，然后配置一下，就可以实现类似Visual Studio的自动补全功能了。当然，为了能更准确的自动补全，建议大家编写一个javascript字典文件，让neocomplcache插件可以更加准确和精确地替你自动补齐。
+   
+# 语法检查和快速调试: 
+  * javascript的错误提示插件我知道的有两个：lint.vim和jslint，这两个我都试过，我建议大家使用lint.vim因为jslint在你编辑文件的时候总会弹出一个控制台窗口，很是烦人，而lint.vim会在你保存的文件的时候才会检测错误。另外，lint.vim使用的js解释器是v8解释器，谷歌的东西肯定是不错的。（温馨提示:编译 v8 的时候不建议看官网的编辑教程，v8工程目录自带一个README文件，里面有详细的编译v8的步骤，按照那些步骤走就可以成功编译v8了！ ）
+  * javascriptlint
+   
+# 文件浏览: NERDTree
+# 函数跳转: CTags, CScope, TagList
+# 代码格式化: jsbeautify.vim
+# 变量标记和检查: mark.vim
+# 字典补全: javascript.dict
+# 运行代码片段: spidermonkey
+  * 在vim编写javascript代码后，输入!js %即可执行当前文件的代码。也可以选中一段代码然后执行:’<,'>!js，这样会插入执行结果到当前文件。

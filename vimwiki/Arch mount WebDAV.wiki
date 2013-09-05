@@ -1,0 +1,6 @@
+#1.Install davfs2
+yaourt -S davfs2
+
+#2.Example:
+sudo mount -t davfs http://42.96.150.218/webdav /mnt/dav
+

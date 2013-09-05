@@ -1,0 +1,1 @@
+Initrd ramdisk或者""initrd""是指一个临时文件系统，它在启动阶段被 Linux 内核调用。initrd主要用于当 “根”文件系统被挂载之前，进行准备工作。

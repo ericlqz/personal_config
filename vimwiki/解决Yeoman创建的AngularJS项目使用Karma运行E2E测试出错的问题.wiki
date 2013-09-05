@@ -1,0 +1,15 @@
+# 1 Modify karma-e2e.conf.js
+  * uncomment the proxies and urlRoot
+# 2 Modify Gruntfile.js
+  * add 'e2e' to 'watch:karma'.
+    * e2e: {
+        configFile: 'karma-e2e.conf.js',
+        singleRun: true
+      },
+  * regist task
+    * grunt.registerTask('test:e2e', [
+        'clean:server',
+        'concurrent:test',
+        // 'connect:test', // do not need
+        'karma:e2e'
+      ]);

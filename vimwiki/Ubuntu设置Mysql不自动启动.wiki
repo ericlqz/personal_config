@@ -1,0 +1,10 @@
+在Ubuntu10.04(或更早一点)开始，ubuntu使用Upstart替代传统的/sbin/init在启动的同时运行服务和设定的任务。ubuntu10.04下，用apt安装的mysql，便是使用了upstart的启动方式。安装后预设的mysql在系统启动时会自动启动，停止自动启动的方法很简单，sudo编辑/etc/init/mysql.conf，把其中的start节点：
+
+...
+start on (net-device-up
+          and local-filesystems
+         and runlevel [2345])
+改为:
+...
+start on runlevel [!0123456]
+这样便取消了mysql在开机时的自动启动。

@@ -1,0 +1,13 @@
+在init.d目录建立一个脚本文件svnd.sh 
+# cd /etc/init.d
+# vim svnd.sh
+输入svnd.sh内容如下（/var/svn 为svn仓库目录）：
+
+#!/bin/bash
+#svnserve startup
+svnserve -d -r /kaifa/svn
+
+保存退出。
+更新，修改权限：
+# chmod 777 svnd.sh
+# update-rc.d svnd.sh defaults

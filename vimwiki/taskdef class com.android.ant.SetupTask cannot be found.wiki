@@ -1,0 +1,17 @@
+Problem:
+When use ant to build the android project, we got the error:
+taskdef class com.android.ant.SetupTask cannot be found.
+It means that the sdk path isnot find by the ant.
+
+Solution:
+1. check if the local.property file exist or not.
+If not, create the file, and write this sentence:
+
+  sdk.dir=/home/eric/development/android-sdk-linux
+
+The path depends on your sdk path.
+
+2. update your android project.
+android update project -p <path to your project>
+
+3. rebuild your project, it should work.

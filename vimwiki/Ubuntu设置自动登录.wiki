@@ -1,0 +1,23 @@
+To boot into text mode
+
+sudo vim /etc/default/grub
+
+and change the following line:
+
+GRUB_CMDLINE_LINUX_DEFAULT="text"
+exit and enter:
+
+ sudo update-grub
+Automatically login in text mode without specifying userid or password
+
+Add -a <your-user-name> to the line:
+
+exec /sbin/getty -8 38400 tty1
+in file /etc/init/tty1.conf
+
+like so:
+
+exec /sbin/getty -8 38400 tty6 -a gruber
+/etc/init/tty1.conf is the upstart job that runs at the appropriate time to start the terminal session on tty1. Adding the -a option tells getty to call the login program with the -f option to sign that user in, bypassing the user prompt from getty and the password prompt from login.
+
+Upstart is the Ubuntu system that operates as the kernel init process (process 1).

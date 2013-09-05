@@ -1,0 +1,65 @@
+
+首先确认手机连接上电脑，lsusb查看下设备记录。
+
+www.linuxidc.com@linuxidc-laptop:~$ lsusb Bus 007 Device 009: ID 18d1:4e12 Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub Bus 001 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub Bus 004 Device 004: ID 093a:2510 Pixart Imaging, Inc. Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+我这里是:
+
+Bus 007 Device 009: ID 18d1:4e12
+然后在/etc/udev/rules.d/下创建一个配置文件: 51-Android.rules
+
+sudo vim /etc/udev/rules.d/50-Android.rules
+文件里添加如下配置参数:
+
+SUBSYSTEM=="usb", SYSFS{"High Tech Computer Corp."}=="0bb4", MODE="0666"
+保存，给配置文件设置下权限
+
+sudo chmod a+rx /etc/udev/rules.d/50-Android.rules
+Restart
+
+sudo /etc/init.d/udev restart
+最后再重启下adb服务，就可以了(没配置环境变量的请进入Android SDK tools目录执行sudo ./adb kill-server ./adb devices)
+
+sudo adb kill-server sudo adb devices
+补充
+SYSFS参数:
+
+SYSFS{"idVendor"}="xxx"
+针对Linux ADB驱动配置文件里的SYSFS参数是指设备厂商。当初因为是HTC帮Google做的手机，所以官网一开始的用例上写的是”High Tech Computer Corp.”。但现在Moto, 索爱, 三星等一批手机厂商的加入，Android生产厂商已不只HTC一家。而且且如果设备型号不是0bb4那该怎么办呢？
+
+读sdk帮助文档的时候，发现sdk已经提供了说明:
+(详见：docs/guide/developing/device.html)
+
+If you’re developing on Ubuntu Linux, you need to add a rules file that contains a USB configuration for each type of device you want to use for development. Each device manufacturer uses a different vendor ID. The example rules files below show how to add an entry for a single vendor ID (the HTC vendor ID). In order to support more devices, you will need additional lines of the same format that provide a different value for the SYSFS{idVendor} property. For other IDs, see the table of USB Vendor IDs, below.
+
+1. Log in as root and create this file: /etc/udev/rules.d/51-Android.rules.
+
+For Gusty/Hardy, edit the file to read: [注：Ubuntu 7.10及以后版本]
+SUBSYSTEM==”usb”, SYSFS{idVendor}==”0bb4″, MODE=”0666″
+
+For Dapper, edit the file to read: [注：Ubuntu 6.06及以前版本]
+SUBSYSTEM==”usb_device”, SYSFS{idVendor}==”0bb4″, MODE=”0666″
+2. Now execute:
+chmod a+r /etc/udev/rules.d/51-Android.rules
+
+只要按照说明把创建的51-Android.rules文件中的0bb4修改为相应的USB供应商ID信息即可。
+比如我的手机是motorola,idVender是22b8
+那么这一行就是
+
+SUBSYSTEM=="usb", SYSFS{idVendor}=="22b8", MODE="0666"
+不过，你可以写多行，以使用各种设备。比如我就写了所有的，如下：
+
+#Acer      0502 SUBSYSTEM=="usb", SYSFS{idVendor}=="0502", MODE="0666" #Dell     413c SUBSYSTEM=="usb", SYSFS{idVendor}=="413c", MODE="0666" #Foxconn     0489 SUBSYSTEM=="usb", SYSFS{idVendor}=="0489", MODE="0666" #Garmin-Asus     091E SUBSYSTEM=="usb", SYSFS{idVendor}=="091e", MODE="0666" #HTC     0bb4 SUBSYSTEM=="usb", SYSFS{idVendor}=="0bb4", MODE="0666" #Huawei     12d1 SUBSYSTEM=="usb", SYSFS{idVendor}=="12d1", MODE="0666" #Kyocera     0482 SUBSYSTEM=="usb", SYSFS{idVendor}=="0482", MODE="0666" #LG     1004 SUBSYSTEM=="usb", SYSFS{idVendor}=="1004", MODE="0666" #Motorola     22b8 SUBSYSTEM=="usb", SYSFS{idVendor}=="22b8", MODE="0666" #Nvidia     0955 SUBSYSTEM=="usb", SYSFS{idVendor}=="0955", MODE="0666" #Pantech     10A9 SUBSYSTEM=="usb", SYSFS{idVendor}=="10A9", MODE="0666" #Samsung     04e8 SUBSYSTEM=="usb", SYSFS{idVendor}=="04e8", MODE="0666" #Sharp     04dd SUBSYSTEM=="usb", SYSFS{idVendor}=="04dd", MODE="0666" #Sony Ericsson     0fce SUBSYSTEM=="usb", SYSFS{idVendor}=="0fce", MODE="0666" #ZTE     19D2 SUBSYSTEM=="usb", SYSFS{idVendor}=="19D2", MODE="0666"
+但是这上面的ID，并不能包括所有，我手上就有一台设备的USB ID就不在上述之列。
+解决办法是你可以使用lsusb命令查看你的USB ID
+
+www.linuxidc.com@linuxidc-laptop:~$ lsusb Bus 002 Device 003: ID 413c:2003 Dell Computer Corp. Keyboard Bus 002 Device 002: ID 0461:4d22 Primax Electronics, Ltd Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub Bus 001 Device 010: ID 18a1:0002 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+找到上面的ID为18a1,在文件中添加设备就可以了。
+
+SUBSYSTEM=="usb", SYSFS{idVendor}=="18a1", MODE="0666"
+修改/etc/udev/rules.d/51-Android.rules不需要重启Linux机器，重新插拔一下设备就可以了。再次运行adb devices就可以看到你的设备已经连接
+
+www.linuxidc.com@linuxidc-laptop:/opt/Android/android-sdk-linux_86/tools$ sudo ./adb devices List of devices attached 0403502001011000    device
+而在此之前，你可能看到的是
+www.linuxidc.com@linuxidc-laptop:/opt/android/android-sdk-linux_86/tools$ sudo ./adb devices
+List of devices attached
+????????????    no permissions

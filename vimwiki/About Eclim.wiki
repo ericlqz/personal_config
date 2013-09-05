@@ -1,0 +1,13 @@
+官网: http://eclim.org/eclimd.html
+
+1. Where is Deamon?
+/usr/share/eclipse/eclimd
+
+2. Command use command?
+    => PingEclim
+    => ProjectCreate *** -n java
+    => ProjectList
+    => ProjectTree [***]
+    => %JavaFormat
+    => Validate
+    => JavaCorrect

@@ -1,0 +1,4 @@
+background: I use 'fcitx' as my chinese input method
+
+1. make sure you have fcitx-gtk2 installed and GTK_IM_MODULE=fcitx
+2. run '/usr/bin/gtk-query-immodules-2.0 > /etc/gtk-2.0/gtk.immodules'
